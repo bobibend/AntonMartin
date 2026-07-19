@@ -1,0 +1,530 @@
+/* Library Portal Full Screen Container */
+.library-portal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  height: 100vh;
+  width: 100vw;
+  background-color: #07050a;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(255, 209, 220, 0.08) 0px, transparent 55%),
+    radial-gradient(at 100% 100%, rgba(212, 230, 241, 0.06) 0px, transparent 55%),
+    radial-gradient(at 50% 50%, rgba(13, 10, 20, 1) 0px, #050407 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #ffffff;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  
+  /* Snappy garage door roll-down on mount */
+  animation: garageDoorClose 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.library-portal-container.is-exiting {
+  /* Snappy garage door roll-up on exit */
+  animation: garageDoorOpen 0.45s cubic-bezier(0.7, 0, 0.84, 0) both;
+  pointer-events: none;
+}
+
+/* Library Title & Subtitle */
+.library-header {
+  text-align: center;
+  margin-bottom: 48px;
+  animation: fadeInDown 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.library-title {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin: 0 0 10px 0;
+  background: linear-gradient(135deg, #ffd1dc 10%, #d4e6f1 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.library-subtitle {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Shelf layout for library grid (dynamically space-around from screen edges) */
+.library-grid {
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  width: 90%;
+  max-width: 1200px;
+  perspective: 1200px;
+  animation: scaleUp 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 3D Interactive Card */
+.book-card {
+  width: 228px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transform-style: preserve-3d;
+  transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.4),
+    0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.book-card:hover {
+  transform: none !important;
+  border-color: rgba(255, 209, 220, 0.2);
+  box-shadow: 
+    0 20px 45px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(255, 209, 220, 0.08);
+}
+
+/* Book Cover container layout */
+.book-card-cover-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  background: #000000;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.book-static-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.book-hover-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 95%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Fade rules for hover states */
+
+.book-hover-video.fade-in {
+  opacity: 1;
+}
+
+/* Information Box */
+.book-card-info {
+  padding: 18px 16px;
+  background: rgba(0, 0, 0, 0.35);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.book-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 5px 0;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.2px;
+}
+
+.book-card-author {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.book-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.book-card-badge-18 {
+  font-size: 10px;
+  font-weight: 800;
+  color: #ff2a85; /* Vibrant neon pink */
+  border: 1px solid rgba(255, 42, 133, 0.5);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 42, 133, 0.08);
+  text-shadow: 0 0 5px rgba(255, 42, 133, 0.6);
+  box-shadow: 0 0 8px rgba(255, 42, 133, 0.2);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Entrance Animations */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Locked Book Cards */
+.book-card.book-locked {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: grayscale(0.3);
+  transition: all 0.45s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.book-card.book-locked:hover {
+  opacity: 0.9;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+}
+
+/* Book Summary Hover Overlay */
+.book-summary-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(7, 5, 10, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 16px;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 10;
+}
+
+.book-card.book-locked:hover .book-summary-overlay {
+  opacity: 1;
+}
+
+.book-summary-badge {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ff2a85; /* Neon Pink */
+  background: rgba(255, 42, 133, 0.08);
+  border: 1px solid rgba(255, 42, 133, 0.3);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 18px;
+  text-shadow: 0 0 4px rgba(255, 42, 133, 0.4);
+}
+
+.book-summary-text {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  margin: 0;
+  font-weight: 500;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 14px 4px;
+}
+
+/* Placeholder Cover Layout (Dark Gray / Black gradient) */
+.book-card-cover-wrapper.placeholder-cover {
+  background: linear-gradient(145deg, #16141a 0%, #08070b 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.book-cover-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+
+.placeholder-series {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.25);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.placeholder-sub {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.45) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Garage Door Roll Keyframes */
+@keyframes garageDoorClose {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes garageDoorOpen {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+/* Tablet & Mobile Responsiveness queries */
+@media (max-width: 900px) {
+  .library-grid {
+    width: 95%;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .library-portal-container {
+    justify-content: flex-start;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  
+  .library-header {
+    margin-bottom: 36px;
+  }
+  
+  .library-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+    width: 100%;
+  }
+
+  .book-card {
+    width: 210px; /* Snug card size on smaller screens */
+  }
+
+  .book-hover-video {
+    opacity: 1 !important;
+  }
+
+  .book-investigation {
+    order: 1;
+  }
+
+  .book-escape {
+    order: 2;
+  }
+
+  .book-crimes {
+    order: 3;
+  }
+}
+
+/* Age Gate Modal Overlay Styles (Sleek Dark/Black Neon theme) */
+.age-gate-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(4, 3, 6, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: modalFadeIn 0.3s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.age-gate-modal {
+  width: 90%;
+  max-width: 320px;
+  background: rgba(8, 6, 12, 0.95);
+  border: 1px solid rgba(255, 42, 133, 0.25);
+  border-radius: 20px;
+  padding: 32px 24px;
+  box-sizing: border-box;
+  text-align: center;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(255, 42, 133, 0.2); /* vibrant neon pink glow */
+  animation: modalScaleUp 0.4s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.age-gate-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.3px;
+}
+
+.age-gate-text {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.6;
+  margin: 0 0 28px 0;
+  font-weight: 400;
+}
+
+.age-gate-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.age-gate-btn {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 15px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  border: none;
+}
+
+.btn-confirm {
+  background: #ff2a85; /* Vibrant neon pink button */
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 42, 133, 0.45);
+  border: 1px solid rgba(255, 42, 133, 0.2);
+}
+
+.btn-confirm:hover {
+  background: #ff5ea1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 42, 133, 0.6);
+}
+
+.btn-decline {
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-decline:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Floating Support Button */
+.library-support-btn {
+  position: absolute;
+  top: 32px;
+  right: 48px;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  z-index: 100;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.support-btn-text {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: color 0.3s ease;
+}
+
+.library-support-btn:hover {
+  background: rgba(0, 240, 255, 0.08);
+  border-color: rgba(0, 240, 255, 0.3);
+  transform: scale(1.05) translateY(-1px);
+  color: #00f0ff; /* Glowing neon cyan-blue color */
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.35),
+    0 0 15px rgba(0, 240, 255, 0.45);
+}
+
+.library-support-btn:active {
+  transform: scale(1) translateY(0);
+}
+
+@media (max-width: 768px) {
+  .library-support-btn {
+    top: 20px;
+    right: 20px;
+    height: 40px;
+    padding: 0 14px;
+    border-radius: 20px;
+    gap: 8px;
+  }
+
+  .support-btn-text {
+    font-size: 11px;
+    letter-spacing: 1.2px;
+  }
+}
+

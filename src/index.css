@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500;600&family=Archivo+Black&display=swap');
+
+:root {
+  /* Dynamic pastel backgrounds will be set as CSS custom variables in App.jsx */
+  --bg-color-1: #ffd1dc;
+  --bg-color-2: #e8f0fe;
+  --bg-color-3: #fff9c4;
+  --page-bg: #fffbf5;
+  --page-text: #2f2a24;
+  --accent-color: #8c7ae6;
+  --ui-font: 'Inter', system-ui, sans-serif;
+  --book-font: 'Bodoni 72', 'Libre Bodoni', Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  font-family: var(--ui-font);
+  overflow: hidden; /* Prevent scrolling the body, scroll inside the reader container */
+  height: 100vh;
+  width: 100vw;
+  background-color: #f0f0f0;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Animations for Background */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0) translateX(0px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.25;
+  }
+  90% {
+    opacity: 0.25;
+  }
+  100% {
+    transform: translateY(-115vh) translateX(var(--drift-x, 40px)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Elegant Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Active buttons and links styles */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Main Reader Layout */
+.main-reader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 10;
+  
+  /* Smooth cinematic entrance transition */
+  animation: readerFadeIn 0.65s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+@keyframes readerFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Floating Navigation Arrows */
+.nav-arrow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: var(--page-text);
+  opacity: 0.6;
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.05),
+    0 0 1px 0 rgba(0, 0, 0, 0.1);
+  z-index: 90;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.left-arrow {
+  left: 48px;
+}
+
+.right-arrow {
+  right: 48px;
+}
+
+.nav-arrow-btn:hover:not(:disabled) {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 
+    0 15px 30px -5px rgba(0, 0, 0, 0.1),
+    0 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.left-arrow:hover:not(:disabled) {
+  transform: translateY(-50%) translateX(-4px) scale(1.06);
+}
+
+.right-arrow:hover:not(:disabled) {
+  transform: translateY(-50%) translateX(4px) scale(1.06);
+}
+
+.nav-arrow-btn:active:not(:disabled) {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.nav-arrow-btn:disabled {
+  opacity: 0.15;
+  cursor: not-allowed;
+  transform: translateY(-50%) scale(1);
+}
+
+/* Responsive Rules for UI controls */
+@media (max-width: 1024px) {
+  .nav-arrow-btn {
+    width: 44px;
+    height: 44px;
+  }
+  .left-arrow {
+    left: 20px;
+  }
+  .right-arrow {
+    right: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-arrow-btn {
+    display: none; /* Hide navigation arrows on tablet/mobile; rely entirely on page tap/swipe gestures */
+  }
+}
+

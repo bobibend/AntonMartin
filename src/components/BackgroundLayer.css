@@ -1,0 +1,352 @@
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background-color: var(--page-bg);
+  transition: background-color 1s ease;
+}
+
+/* Layer 1: Orb Mesh Gradients */
+.gradient-orbs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(100px);
+  opacity: 0.65;
+  transition: all 1s ease;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
+  transition: background 1.2s ease, width 1.2s ease, height 1.2s ease;
+}
+
+.orb-1 {
+  width: 50vw;
+  height: 50vw;
+  background: var(--bg-color-1);
+  top: -10%;
+  left: -10%;
+  animation: orbDrift1 25s infinite alternate ease-in-out;
+}
+
+.orb-2 {
+  width: 45vw;
+  height: 45vw;
+  background: var(--bg-color-2);
+  top: -15%;
+  right: -10%;
+  animation: orbDrift2 30s infinite alternate ease-in-out;
+}
+
+.orb-3 {
+  width: 55vw;
+  height: 55vw;
+  background: var(--bg-color-3);
+  bottom: -20%;
+  left: 10%;
+  animation: orbDrift3 28s infinite alternate ease-in-out;
+}
+
+.orb-4 {
+  width: 40vw;
+  height: 40vw;
+  background: var(--bg-color-1);
+  bottom: -10%;
+  right: -10%;
+  animation: orbDrift4 22s infinite alternate ease-in-out;
+}
+
+/* Orbital Drift Animations */
+@keyframes orbDrift1 {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(100px, 80px) scale(1.1);
+  }
+  100% {
+    transform: translate(-50px, 150px) scale(0.9);
+  }
+}
+
+@keyframes orbDrift2 {
+  0% {
+    transform: translate(0px, 0px) scale(1.1);
+  }
+  50% {
+    transform: translate(-120px, 100px) scale(0.9);
+  }
+  100% {
+    transform: translate(60px, -50px) scale(1.05);
+  }
+}
+
+@keyframes orbDrift3 {
+  0% {
+    transform: translate(0px, 0px) scale(0.9);
+  }
+  50% {
+    transform: translate(80px, -150px) scale(1.15);
+  }
+  100% {
+    transform: translate(-90px, 70px) scale(0.95);
+  }
+}
+
+@keyframes orbDrift4 {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(-70px, -70px) scale(1.1);
+  }
+  100% {
+    transform: translate(100px, 50px) scale(0.9);
+  }
+}
+
+/* Layer 2: Subtle Grid Pattern overlay */
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(rgba(0, 0, 0, 0.015) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Layer 3: Floating Symbols */
+.floating-symbols-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1; /* below pop-art title */
+}
+
+.floating-particle {
+  position: absolute;
+  bottom: -50px;
+  color: var(--accent-color);
+  opacity: 0;
+  pointer-events: none;
+  animation-name: particleFloat;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.05));
+  transition: color 1s ease;
+}
+
+/* Pop Art Background Title */
+.pop-art-title-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 2; /* above floating particles */
+  pointer-events: none;
+  user-select: none;
+}
+
+.pop-art-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: 'Archivo Black', 'Inter', sans-serif;
+  font-size: clamp(3rem, 14vw, 11rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  opacity: 0.45; /* elegant blended watermark feel */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  transition: all 0.5s ease;
+}
+
+.pop-art-left {
+  /* Book half-width is 410px. Sticking right edge slightly inside for peak-out */
+  right: calc(50% + 355px);
+  align-items: flex-end;
+  text-align: right;
+}
+
+.pop-art-right {
+  /* Book half-width is 410px. Sticking left edge slightly inside for peak-out */
+  left: calc(50% + 355px);
+  align-items: flex-start;
+  text-align: left;
+}
+
+.title-word {
+  display: block;
+  font-weight: 900;
+  -webkit-text-stroke: 3px var(--page-text);
+  paint-order: stroke fill;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.neon-word {
+  text-shadow: 
+    3px 3px 0px var(--page-text),
+    6px 6px 0px var(--accent-color),
+    9px 9px 0px rgba(0, 0, 0, 0.08);
+}
+
+.nights-word {
+  text-shadow: 
+    3px 3px 0px var(--page-text),
+    6px 6px 0px var(--accent-color),
+    9px 9px 0px rgba(0, 0, 0, 0.08);
+}
+
+/* staggered translation: NEON shifted left, NIGHTS shifted right */
+.neon-left {
+  color: var(--title-color-ne);
+  transform: translateX(-35px) rotate(-6deg);
+}
+
+.neon-right {
+  color: var(--title-color-on);
+  transform: translateX(-35px) rotate(-4deg);
+}
+
+.nights-left {
+  color: var(--title-color-nig);
+  transform: translateX(25px) rotate(3deg);
+}
+
+.nights-right {
+  color: var(--title-color-hts);
+  transform: translateX(25px) rotate(5deg);
+}
+
+/* Tablet/Mobile centered title container (hidden on desktop) */
+.pop-art-tablet-mobile {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .pop-art-side {
+    font-size: clamp(2.5rem, 12vw, 8.5rem);
+  }
+  .pop-art-left {
+    right: calc(50% + 310px);
+  }
+  .pop-art-right {
+    left: calc(50% + 310px);
+  }
+}
+
+@media (max-width: 1024px) {
+  .pop-art-desktop-split {
+    display: none;
+  }
+  
+  .pop-art-tablet-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-top: 28px; /* sits perfectly at the top, peeking above bezel */
+    overflow: hidden;
+  }
+
+  .pop-art-centered-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Archivo Black', 'Inter', sans-serif;
+    font-size: clamp(2.8rem, 11vw, 5.2rem);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    opacity: 0.45;
+  }
+
+  .neon-centered {
+    color: var(--title-color-ne);
+    transform: translateX(-18px) rotate(-3deg);
+  }
+
+  .nights-centered {
+    color: var(--title-color-nig);
+    transform: translateX(18px) rotate(2deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .pop-art-centered-title {
+    font-size: clamp(2.2rem, 10vw, 4.2rem);
+  }
+  
+  .title-word {
+    -webkit-text-stroke: 2px var(--page-text);
+    text-shadow: 
+      2px 2px 0px var(--page-text),
+      4px 4px 0px var(--accent-color),
+      6px 6px 0px rgba(0, 0, 0, 0.08);
+  }
+
+  .neon-centered {
+    transform: translateX(-12px) rotate(-3deg);
+  }
+
+  .nights-centered {
+    transform: translateX(12px) rotate(2deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .pop-art-tablet-mobile {
+    padding-top: 16px;
+  }
+  
+  .pop-art-centered-title {
+    font-size: clamp(1.8rem, 9vw, 3.2rem);
+  }
+
+  .neon-centered {
+    transform: translateX(-8px) rotate(-3deg);
+  }
+
+  .nights-centered {
+    transform: translateX(8px) rotate(2deg);
+  }
+}
+
+/* Premium Noise overlay */
+.noise-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.02;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}

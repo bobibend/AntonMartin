@@ -1,0 +1,132 @@
+.landing-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 500; /* above all else */
+  background: rgba(5, 4, 7, 0.65); /* dark tinted cover */
+  backdrop-filter: blur(20px); /* frosted glass blur over the library portal content */
+  -webkit-backdrop-filter: blur(20px);
+  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), backdrop-filter 0.6s ease;
+  opacity: 1;
+}
+
+.landing-container.is-exiting {
+  opacity: 0;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  transform: scale(1.03);
+  pointer-events: none;
+}
+
+.landing-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+}
+
+.landing-author {
+  font-size: clamp(14px, 2vw, 18px);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 12px;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.landing-title {
+  font-family: 'Archivo Black', 'Inter', sans-serif;
+  font-size: clamp(3rem, 10vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-weight: 900;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 0 24px 0;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.word-neon {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.word-nights {
+  color: #ff2a85;
+  text-shadow: 0 0 15px rgba(255, 42, 133, 0.3);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.landing-cta {
+  font-size: 17px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: #ff2a85;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  margin: 0;
+  position: relative;
+}
+
+.landing-cta::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background: #ff2a85;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: translateX(-50%);
+}
+
+/* Hover effects for elevation and glow */
+.landing-content:hover .landing-author {
+  color: #ffffff;
+  letter-spacing: 8px;
+  transform: translateY(-5px);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.landing-content:hover .landing-title {
+  transform: translateY(-8px) scale(1.05);
+}
+
+.landing-content:hover .word-neon {
+  color: #ffffff;
+  text-shadow: 
+    0 0 10px #ffffff,
+    0 0 20px rgba(0, 240, 255, 0.8),
+    0 0 40px rgba(0, 240, 255, 0.4);
+}
+
+.landing-content:hover .word-nights {
+  color: #ff2a85;
+  text-shadow: 
+    0 0 10px #ff2a85,
+    0 0 20px rgba(255, 42, 133, 0.8),
+    0 0 35px rgba(255, 42, 133, 0.45);
+}
+
+.landing-content:hover .landing-cta {
+  opacity: 1;
+  letter-spacing: 6px;
+  transform: translateY(0);
+  text-shadow: 0 0 8px rgba(255, 42, 133, 0.4);
+}
+
+.landing-content:hover .landing-cta::after {
+  width: 100%;
+}
