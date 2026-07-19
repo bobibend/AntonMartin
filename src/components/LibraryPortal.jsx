@@ -108,7 +108,7 @@ export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlu
             <div className="book-summary-overlay">
               <span className="book-summary-badge">Tervezett</span>
               <p className="book-summary-text">
-                A Neon Nights - Crimes Amanda és Amy fiatalkorát mutatja be az intézeti évektől a Neon Nightsban történt eseményekig bezárólag.
+                A Neon Nights - Crimes Amanda és Jessica fiatalkorát mutatja be az intézeti évektől a Neon Nightsban történt eseményekig bezárólag.
               </p>
             </div>
           </div>
