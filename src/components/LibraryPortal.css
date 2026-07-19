@@ -15,7 +15,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 60px 24px 48px;
+  padding: 3.5vh 24px 2vh;
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: #ffffff;
@@ -45,15 +45,15 @@
 /* Library Title & Subtitle */
 .library-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 3vh;
   animation: fadeInDown 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .library-title {
-  font-size: 36px;
+  font-size: 30px;
   font-weight: 800;
   letter-spacing: -1px;
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
   background: linear-gradient(135deg, #ffd1dc 10%, #d4e6f1 90%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -61,7 +61,7 @@
 }
 
 .library-subtitle {
-  font-size: 15px;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.45);
   font-weight: 500;
   margin: 0;
@@ -80,7 +80,7 @@
 
 /* 3D Interactive Card */
 .book-card {
-  width: 228px;
+  width: 216px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 14px;
@@ -581,7 +581,7 @@
 
 /* Library Page Footer with Email Contact */
 .library-portal-footer {
-  margin-top: 64px;
+  margin-top: 4vh;
   width: 100%;
   display: flex;
   flex-direction: column;
