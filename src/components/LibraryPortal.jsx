@@ -154,6 +154,26 @@ export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlu
               <span className="book-card-author">{author}</span>
               <span className="book-card-badge-18">18+</span>
             </div>
+            
+            {/* E-book downloads */}
+            <div className="book-card-downloads" onClick={(e) => e.stopPropagation()}>
+              <a 
+                href="/ebook/Neon Nights.pdf" 
+                download="Anton Martin - Neon Nights - Investigation.pdf"
+                className="download-link-btn"
+                title="Letöltés PDF formátumban"
+              >
+                <span>PDF</span>
+              </a>
+              <a 
+                href="/ebook/Neon Nights.epub" 
+                download="Anton Martin - Neon Nights - Investigation.epub"
+                className="download-link-btn"
+                title="Letöltés EPUB formátumban"
+              >
+                <span>EPUB</span>
+              </a>
+            </div>
           </div>
         </div>
 

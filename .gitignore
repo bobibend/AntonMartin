@@ -32,6 +32,10 @@ dist-ssr
 ~$*.doc*
 ~$*.xls*
 
+# Root level converted binaries (tracked inside public/ebook instead)
+/Neon Nights.pdf
+/Neon Nights.epub
+
 # Public assets - exclude bulk mockups and only track active web assets
 public/cover/*
 !public/cover/Cover.webp
