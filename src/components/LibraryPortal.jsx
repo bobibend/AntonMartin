@@ -20,7 +20,7 @@ const getCookie = (name) => {
   return null;
 };
 
-export default function LibraryPortal({ onLaunchReader, bookTitle, author }) {
+export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlurred }) {
   const centerVideoRef = useRef(null);
   const [centerHovered, setCenterHovered] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
@@ -75,7 +75,7 @@ export default function LibraryPortal({ onLaunchReader, bookTitle, author }) {
   };
 
   return (
-    <div className={`library-portal-container no-click-paging ${isExiting ? 'is-exiting' : ''}`}>
+    <div className={`library-portal-container no-click-paging ${isExiting ? 'is-exiting' : ''} ${isBlurred ? 'is-blurred-for-landing' : ''}`}>
       {/* Floating Support Author Button (Ko-fi) */}
       <a 
         href="https://ko-fi.com/antonmartin" 

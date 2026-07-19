@@ -25,6 +25,15 @@
   
   /* Snappy garage door roll-down on mount */
   animation: garageDoorClose 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  
+  /* Blur transition for landing page overlay */
+  filter: blur(0px);
+  transition: filter 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.library-portal-container.is-blurred-for-landing {
+  filter: blur(20px);
+  pointer-events: none; /* disable library clicks while on landing */
 }
 
 .library-portal-container.is-exiting {
@@ -499,13 +508,13 @@
 }
 
 .library-support-btn:hover {
-  background: rgba(0, 240, 255, 0.08);
-  border-color: rgba(0, 240, 255, 0.3);
+  background: rgba(123, 237, 159, 0.08);
+  border-color: rgba(123, 237, 159, 0.3);
   transform: scale(1.05) translateY(-1px);
-  color: #00f0ff; /* Glowing neon cyan-blue color */
+  color: #7bed9f; /* Glowing pastel green color */
   box-shadow: 
     0 12px 40px rgba(0, 0, 0, 0.35),
-    0 0 15px rgba(0, 240, 255, 0.45);
+    0 0 15px rgba(123, 237, 159, 0.45);
 }
 
 .library-support-btn:active {

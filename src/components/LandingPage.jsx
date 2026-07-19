@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './LandingPage.css';
 
-export default function LandingPage({ onEnter }) {
-  const [isExiting, setIsExiting] = useState(false);
-
+export default function LandingPage({ isExiting, onEnter, onStartExit }) {
   const handleClick = () => {
-    setIsExiting(true);
+    onStartExit();
     setTimeout(() => {
       onEnter();
     }, 600); // match transition duration in CSS

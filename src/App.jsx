@@ -11,6 +11,7 @@ import './index.css';
 function App() {
   const [readerStarted, setReaderStarted] = useState(false);
   const [landingActive, setLandingActive] = useState(true);
+  const [landingExiting, setLandingExiting] = useState(false);
 
   // Hash-based routing listener
   useEffect(() => {
@@ -18,13 +19,16 @@ function App() {
       const hash = window.location.hash;
       if (hash === '#/library') {
         setLandingActive(false);
+        setLandingExiting(false);
         setReaderStarted(false);
       } else if (hash === '#/reader') {
         setLandingActive(false);
+        setLandingExiting(false);
         setReaderStarted(true);
       } else {
         // Default entry path is landing
         setLandingActive(true);
+        setLandingExiting(false);
         setReaderStarted(false);
       }
     };
@@ -222,12 +226,21 @@ function App() {
           onLaunchReader={() => { window.location.hash = '#/reader'; }} 
           bookTitle={bookData.title}
           author={bookData.author}
+          isBlurred={landingActive && !landingExiting}
         />
       )}
 
       {/* Landing Page (if active) */}
       {landingActive && !readerStarted && (
-        <LandingPage onEnter={() => { window.location.hash = '#/library'; }} />
+        <LandingPage 
+          isExiting={landingExiting}
+          onEnter={() => {
+            setLandingActive(false);
+            setLandingExiting(false);
+            window.location.hash = '#/library';
+          }}
+          onStartExit={() => setLandingExiting(true)}
+        />
       )}
     </>
   );
