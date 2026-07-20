@@ -6,27 +6,61 @@ import TableOfContents from './components/TableOfContents';
 import LibraryPortal from './components/LibraryPortal';
 import LandingPage from './components/LandingPage';
 import { applyChapterTheme } from './utils/themeHelper';
+import { fetchPreviewDocument } from './utils/previewLoader';
 import './index.css';
 
 function App() {
   const [readerStarted, setReaderStarted] = useState(false);
   const [landingActive, setLandingActive] = useState(true);
   const [landingExiting, setLandingExiting] = useState(false);
+  const [previewData, setPreviewData] = useState(null);
 
   // Hash-based routing listener
   useEffect(() => {
-    const handleHashChange = () => {
+    const handleHashChange = async () => {
       const hash = window.location.hash;
-      if (hash === '#/library') {
+      if (hash.startsWith('#/preview/')) {
+        const docName = hash.replace('#/preview/', '');
+        setLandingActive(false);
+        setLandingExiting(false);
+        setReaderStarted(true);
+
+        const loaded = await fetchPreviewDocument(docName);
+        if (loaded) {
+          setPreviewData(loaded);
+        } else {
+          setPreviewData({
+            title: docName.replace(/[-_]/g, ' '),
+            author: 'Anton Martin',
+            subtitle: 'Preview Dokumentum',
+            paragraphs: [
+              `A kért preview dokumentum ("${docName}") nem található.`,
+              'Győződj meg róla, hogy a fájl létezik a preview/html/ mappában (pl. interju.json vagy interju.html néven).'
+            ],
+            theme: {
+              bgColor1: '#ffd1dc',
+              bgColor2: '#e8f0fe',
+              bgColor3: '#fff9c4',
+              pageBg: '#fffbf5',
+              pageText: '#2f2a24',
+              accentColor: '#8c7ae6'
+            },
+            shapes: ['könyv', 'toll']
+          });
+        }
+      } else if (hash === '#/library') {
+        setPreviewData(null);
         setLandingActive(false);
         setLandingExiting(false);
         setReaderStarted(false);
       } else if (hash === '#/reader') {
+        setPreviewData(null);
         setLandingActive(false);
         setLandingExiting(false);
         setReaderStarted(true);
       } else {
         // Default entry path is landing
+        setPreviewData(null);
         setLandingActive(true);
         setLandingExiting(false);
         setReaderStarted(false);
@@ -82,14 +116,18 @@ function App() {
 
   // Set pastel colors dynamically in document properties using the external helper
   useEffect(() => {
-    applyChapterTheme(currentChapter.colors);
-  }, [currentChapter.colors]);
+    if (previewData && previewData.theme) {
+      applyChapterTheme(previewData.theme);
+    } else if (currentChapter.colors) {
+      applyChapterTheme(currentChapter.colors);
+    }
+  }, [currentChapter.colors, previewData]);
 
   // Page turns
   const handlePageForward = () => {
     if (currentPageIndex < totalPages - 1) {
       setCurrentPageIndex(currentPageIndex + 1);
-    } else {
+    } else if (!previewData) {
       // Go to next chapter!
       if (currentChapterIndex < bookData.chapters.length - 1) {
         setCurrentChapterIndex(currentChapterIndex + 1);
@@ -101,7 +139,7 @@ function App() {
   const handlePageBackward = () => {
     if (currentPageIndex > 0) {
       setCurrentPageIndex(currentPageIndex - 1);
-    } else {
+    } else if (!previewData) {
       // Go to previous chapter!
       if (currentChapterIndex > 0) {
         setPendingPageLast(true);
@@ -128,7 +166,7 @@ function App() {
     <>
       {/* Background layer */}
       <BackgroundLayer 
-        shapes={currentChapter.shapes}
+        shapes={previewData ? (previewData.shapes || ['könyv', 'toll']) : currentChapter.shapes}
         hideTitle={landingActive}
       />
 
@@ -154,7 +192,7 @@ function App() {
         <button 
           className="nav-arrow-btn left-arrow no-click-paging"
           onClick={handlePageBackward}
-          disabled={currentChapterIndex === 0 && currentPageIndex === 0}
+          disabled={!previewData && currentChapterIndex === 0 && currentPageIndex === 0}
           title="Előző oldal"
           aria-label="Previous Page"
         >
@@ -165,18 +203,19 @@ function App() {
 
         {/* Dynamic book page content */}
         <BookPage
-          chapterTitle={currentChapter.title}
-          paragraphs={currentChapter.paragraphs}
+          chapterTitle={previewData ? previewData.title : currentChapter.title}
+          paragraphs={previewData ? previewData.paragraphs : currentChapter.paragraphs}
           currentPageIndex={currentPageIndex}
           onPageChange={setCurrentPageIndex}
           onTotalPagesChange={handleTotalPagesChange}
           fontSize={fontSize}
-          bookTitle={bookData.title}
-          author={bookData.author}
+          bookTitle={previewData ? (previewData.subtitle || 'Preview') : bookData.title}
+          author={previewData ? (previewData.author || bookData.author) : bookData.author}
           onPageForward={handlePageForward}
           onPageBackward={handlePageBackward}
-          bookmarkCharIndex={bookmarks[currentChapterIndex]}
+          bookmarkCharIndex={previewData ? null : bookmarks[currentChapterIndex]}
           onToggleBookmark={(charIndex) => {
+            if (previewData) return;
             setBookmarks(prev => {
               const updated = { ...prev };
               if (charIndex === null || charIndex === undefined) {
@@ -187,8 +226,8 @@ function App() {
               return updated;
             });
           }}
-          currentChapterIndex={currentChapterIndex}
-          totalChapters={bookData.chapters.length}
+          currentChapterIndex={previewData ? 0 : currentChapterIndex}
+          totalChapters={previewData ? 1 : bookData.chapters.length}
           onSelectChapter={handleSelectChapter}
         />
 

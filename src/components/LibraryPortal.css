@@ -348,11 +348,11 @@
 
   .book-hover-video {
     opacity: 1 !important;
-    width: 100% !important;
+    width: 95% !important;
   }
 
   .book-static-cover {
-    opacity: 0 !important;
+    opacity: 1 !important;
   }
 
   .book-investigation {

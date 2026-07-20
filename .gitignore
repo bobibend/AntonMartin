@@ -25,6 +25,7 @@ dist-ssr
 
 # Raw design materials and project drafts
 /cover/
+/preview/
 
 # Microsoft Office files and temporary drafts
 *.docx

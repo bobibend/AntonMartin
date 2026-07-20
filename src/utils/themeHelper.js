@@ -70,7 +70,7 @@ export function getRandomVibrantColor() {
 
 // Resolve book page background (very soft pastel tinted warm off-white/törtfehér)
 export function getPageBgColor(colArray) {
-  if (!colArray || colArray.length === 0) return '#FAF7EE'; // default warm parchment
+  if (!Array.isArray(colArray) || colArray.length === 0 || typeof colArray[0] !== 'string') return '#FAF7EE'; // default warm parchment
   const primary = colArray[0].toLowerCase().trim();
   if (primary.includes('rózsaszín') || primary.includes('vörös') || primary.includes('piros') || primary.includes('bordó')) {
     return '#FAF0EE'; // soft warm rose paper
@@ -95,7 +95,7 @@ export function getPageBgColor(colArray) {
 
 // Resolve book page text color (high contrast matching page tint)
 export function getPageTextColor(colArray) {
-  if (!colArray || colArray.length === 0) return '#231F1A';
+  if (!Array.isArray(colArray) || colArray.length === 0 || typeof colArray[0] !== 'string') return '#231F1A';
   const primary = colArray[0].toLowerCase().trim();
   if (primary.includes('kék') || primary.includes('azúr') || primary.includes('rendőr')) {
     return '#152530'; // deep slate navy
@@ -108,7 +108,7 @@ export function getPageTextColor(colArray) {
 
 // Resolve accent color
 export function getAccentColor(colArray) {
-  if (!colArray || colArray.length === 0) return '#8c7ae6';
+  if (!Array.isArray(colArray) || colArray.length === 0 || typeof colArray[0] !== 'string') return '#8c7ae6';
   const primary = colArray[0].toLowerCase().trim();
   if (primary.includes('rózsaszín') || primary.includes('vörös') || primary.includes('piros')) {
     return '#E57373';
@@ -127,14 +127,35 @@ export function getAccentColor(colArray) {
 
 // Apply chapter theme colors to document custom properties
 export function applyChapterTheme(colors) {
-  const colArray = colors || [];
-  
-  // Resolve colors or use fallbacks
-  const c1 = COLOR_PALETTES[colArray[0]?.toLowerCase().trim()] || DEFAULT_BG_1;
-  const c2 = COLOR_PALETTES[colArray[1]?.toLowerCase().trim()] || COLOR_PALETTES[colArray[0]?.toLowerCase().trim()] || DEFAULT_BG_2;
-  const c3 = COLOR_PALETTES[colArray[2]?.toLowerCase().trim()] || DEFAULT_BG_3;
-
   const root = document.documentElement;
+
+  // Support direct theme object input (e.g. { bgColor1, bgColor2, pageBg, pageText, accentColor })
+  if (colors && !Array.isArray(colors) && typeof colors === 'object') {
+    root.style.setProperty('--bg-color-1', colors.bgColor1 || DEFAULT_BG_1);
+    root.style.setProperty('--bg-color-2', colors.bgColor2 || DEFAULT_BG_2);
+    root.style.setProperty('--bg-color-3', colors.bgColor3 || DEFAULT_BG_3);
+    root.style.setProperty('--page-bg', colors.pageBg || '#FAF7EE');
+    root.style.setProperty('--page-text', colors.pageText || '#231F1A');
+    root.style.setProperty('--accent-color', colors.accentColor || '#8c7ae6');
+
+    root.style.setProperty('--title-color-ne', getRandomVibrantColor());
+    root.style.setProperty('--title-color-on', getRandomVibrantColor());
+    root.style.setProperty('--title-color-nig', getRandomVibrantColor());
+    root.style.setProperty('--title-color-hts', getRandomVibrantColor());
+    return;
+  }
+
+  const colArray = Array.isArray(colors) ? colors : [];
+
+  // Resolve colors or use fallbacks
+  const primaryName = typeof colArray[0] === 'string' ? colArray[0].toLowerCase().trim() : '';
+  const secondaryName = typeof colArray[1] === 'string' ? colArray[1].toLowerCase().trim() : '';
+  const tertiaryName = typeof colArray[2] === 'string' ? colArray[2].toLowerCase().trim() : '';
+
+  const c1 = COLOR_PALETTES[primaryName] || DEFAULT_BG_1;
+  const c2 = COLOR_PALETTES[secondaryName] || COLOR_PALETTES[primaryName] || DEFAULT_BG_2;
+  const c3 = COLOR_PALETTES[tertiaryName] || DEFAULT_BG_3;
+
   root.style.setProperty('--bg-color-1', c1);
   root.style.setProperty('--bg-color-2', c2);
   root.style.setProperty('--bg-color-3', c3);
