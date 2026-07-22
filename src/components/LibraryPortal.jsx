@@ -20,11 +20,51 @@ const getCookie = (name) => {
   return null;
 };
 
-export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlurred }) {
+// UI Localization Dictionary
+const TRANSLATIONS = {
+  HU: {
+    library: "Könyvtár",
+    clickCover: "Kattints a borítóra az olvasás megkezdéséhez",
+    support: "támogatás",
+    supportTitle: "Író támogatása (Ko-fi)",
+    soon: "Hamarosan elérhető",
+    planned: "Tervezett",
+    crimesSummary: "A Neon Nights - Crimes Amanda és Jessica fiatalkorát mutatja be az intézeti évektől a Neon Nightsban történt eseményekig bezárólag.",
+    escapeSummary: "A Neon Nights - Escape Amanda Martinez-klánnál töltött időszakát meséli el, miközben Jessica a Neon Nights megbuktatásán dolgozik.",
+    readTitle: "Olvasás megkezdése",
+    downloadPdf: "Letöltés PDF formátumban",
+    downloadEpub: "Letöltés EPUB formátumban",
+    ageTitle: "Kizárólag 18 éven felülieknek",
+    ageText: "A Neon Nights egy felnőtt tartalmú bűnügyi történet. A folytatáshoz kérjük, erősítsd meg, hogy betöltötted a 18. életévedet.",
+    ageConfirm: "Belépek (elmúltam 18)",
+    ageDecline: "Mégsem"
+  },
+  EN: {
+    library: "Library",
+    clickCover: "Click on the cover to start reading",
+    support: "support",
+    supportTitle: "Support the author (Ko-fi)",
+    soon: "Coming soon",
+    planned: "Planned",
+    crimesSummary: "Neon Nights - Crimes covers the youth of Amanda and Jessica from their institutional years up to the events in Neon Nights.",
+    escapeSummary: "Neon Nights - Escape tells the story of Amanda's time with the Martinez clan, while Jessica works on taking down the Neon Nights.",
+    readTitle: "Start reading",
+    downloadPdf: "Download in PDF format",
+    downloadEpub: "Download in EPUB format",
+    ageTitle: "For Adults Only (18+)",
+    ageText: "Neon Nights is a crime story with adult content. To proceed, please confirm that you are at least 18 years of age.",
+    ageConfirm: "Enter (I am 18+)",
+    ageDecline: "Cancel"
+  }
+};
+
+export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlurred, language, onLanguageChange }) {
   const centerVideoRef = useRef(null);
   const [centerHovered, setCenterHovered] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const [showAgeGate, setShowAgeGate] = useState(false);
+
+  const t = TRANSLATIONS[language] || TRANSLATIONS.HU;
 
   useEffect(() => {
     const el = centerVideoRef.current;
@@ -76,16 +116,32 @@ export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlu
 
   return (
     <div className={`library-portal-container no-click-paging ${isExiting ? 'is-exiting' : ''} ${isBlurred ? 'is-blurred-for-landing' : ''}`}>
+      {/* Dynamic Language Selector Toggle (Symmetric Left positioning) */}
+      <div className="library-lang-selector">
+        <button 
+          className={`lang-selector-btn ${language === 'HU' ? 'is-active' : ''}`}
+          onClick={() => onLanguageChange('HU')}
+        >
+          HU
+        </button>
+        <button 
+          className={`lang-selector-btn ${language === 'EN' ? 'is-active' : ''}`}
+          onClick={() => onLanguageChange('EN')}
+        >
+          EN
+        </button>
+      </div>
+
       {/* Floating Support Author Button (Ko-fi) */}
       <a 
         href="https://ko-fi.com/antonmartin" 
         target="_blank" 
         rel="noopener noreferrer" 
         className="library-support-btn" 
-        title="Író támogatása (Ko-fi)"
+        title={t.supportTitle}
         aria-label="Support the author on Ko-fi"
       >
-        <span className="support-btn-text">támogatás</span>
+        <span className="support-btn-text">{t.support}</span>
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
           <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
@@ -93,22 +149,22 @@ export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlu
       </a>
 
       <div className="library-header">
-        <h1 className="library-title">Könyvtár</h1>
-        <p className="library-subtitle">Kattints a borítóra az olvasás megkezdéséhez</p>
+        <h1 className="library-title">{t.library}</h1>
+        <p className="library-subtitle">{t.clickCover}</p>
       </div>
 
       <div className="library-grid">
         {/* Left Book: Crimes (Locked) */}
-        <div className="book-card book-locked book-crimes" title="Hamarosan elérhető">
+        <div className="book-card book-locked book-crimes" title={t.soon}>
           <div className="book-card-cover-wrapper placeholder-cover">
             <div className="book-cover-text">
               <span className="placeholder-series">Neon Nights</span>
               <span className="placeholder-sub">- Crimes -</span>
             </div>
             <div className="book-summary-overlay">
-              <span className="book-summary-badge">Tervezett</span>
+              <span className="book-summary-badge">{t.planned}</span>
               <p className="book-summary-text">
-                A Neon Nights - Crimes Amanda és Jessica fiatalkorát mutatja be az intézeti évektől a Neon Nightsban történt eseményekig bezárólag.
+                {t.crimesSummary}
               </p>
             </div>
           </div>
@@ -127,7 +183,7 @@ export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlu
           onMouseEnter={handleCenterEnter}
           onMouseLeave={handleCenterLeave}
           onClick={handleBookClick}
-          title="Olvasás megkezdése"
+          title={t.readTitle}
         >
           <div className="book-card-cover-wrapper">
             {/* Static Image Cover */}
@@ -161,7 +217,7 @@ export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlu
                 href="/ebook/Neon Nights.pdf" 
                 download="Anton Martin - Neon Nights - Investigation.pdf"
                 className="download-link-btn"
-                title="Letöltés PDF formátumban"
+                title={t.downloadPdf}
               >
                 <span>PDF</span>
               </a>
@@ -169,7 +225,7 @@ export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlu
                 href="/ebook/Neon Nights.epub" 
                 download="Anton Martin - Neon Nights - Investigation.epub"
                 className="download-link-btn"
-                title="Letöltés EPUB formátumban"
+                title={t.downloadEpub}
               >
                 <span>EPUB</span>
               </a>
@@ -178,16 +234,16 @@ export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlu
         </div>
 
         {/* Right Book: Escape (Locked) */}
-        <div className="book-card book-locked book-escape" title="Hamarosan elérhető">
+        <div className="book-card book-locked book-escape" title={t.soon}>
           <div className="book-card-cover-wrapper placeholder-cover">
             <div className="book-cover-text">
               <span className="placeholder-series">Neon Nights</span>
               <span className="placeholder-sub">- Escape -</span>
             </div>
             <div className="book-summary-overlay">
-              <span className="book-summary-badge">Tervezett</span>
+              <span className="book-summary-badge">{t.planned}</span>
               <p className="book-summary-text">
-                A Neon Nights - Escape Amanda Martinez-klánnál töltött időszakát meséli el, miközben Jessica a Neon Nights megbuktatásán dolgozik.
+                {t.escapeSummary}
               </p>
             </div>
           </div>
@@ -217,17 +273,16 @@ export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlu
       {showAgeGate && (
         <div className="age-gate-backdrop">
           <div className="age-gate-modal">
-
-            <h2 className="age-gate-title">Kizárólag 18 éven felülieknek</h2>
+            <h2 className="age-gate-title">{t.ageTitle}</h2>
             <p className="age-gate-text">
-              A Neon Nights egy felnőtt tartalmú bűnügyi történet. A folytatáshoz kérjük, erősítsd meg, hogy betöltötted a 18. életévedet.
+              {t.ageText}
             </p>
             <div className="age-gate-actions">
               <button className="age-gate-btn btn-confirm" onClick={handleConfirmAge}>
-                Belépek (elmúltam 18)
+                {t.ageConfirm}
               </button>
               <button className="age-gate-btn btn-decline" onClick={() => setShowAgeGate(false)}>
-                Mégsem
+                {t.ageDecline}
               </button>
             </div>
           </div>

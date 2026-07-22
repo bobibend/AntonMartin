@@ -460,72 +460,81 @@ export const SHAPE_SVGS = {
   )
 };
 
-// Map Hungarian shape descriptions from excel to our SVG keys
-export function mapShapeToSvgKey(hungarianName, index) {
-  const name = hungarianName.toLowerCase().trim();
+// Map Hungarian or English shape descriptions to our SVG keys
+export function mapShapeToSvgKey(shapeName, index) {
+  const name = shapeName.toLowerCase().trim();
   
-  if (name.includes('rózsaszirom') || name.includes('szirom')) return 'rozaszirom';
-  if (name.includes('csokis') || name.includes('süti') || name.includes('csoki')) return 'cookie';
+  if (name.includes('rózsaszirom') || name.includes('szirom') || name.includes('rose petal') || name.includes('petal')) return 'rozaszirom';
+  if (name.includes('csokis') || name.includes('süti') || name.includes('csoki') || name.includes('cookie')) return 'cookie';
   
   // Lips variations (closed, open, round)
-  if (name.includes('ajak') || name.includes('ajkak') || name.includes('száj')) {
+  if (name.includes('ajak') || name.includes('ajkak') || name.includes('száj') || name.includes('lips')) {
     if (index % 3 === 0) return 'lips';
     if (index % 3 === 1) return 'lips_open';
     return 'lips_round';
   }
   
-  if (name.includes('pulpitus') || name.includes('ambó') || name.includes('tárgyalóterem')) return 'ambo';
-  if (name.includes('asztal')) return 'asztal';
-  if (name.includes('jegyzettömb') || name.includes('cetli') || name.includes('akta') || name.includes('újság') || name.includes('híradó')) return 'jegyzet';
-  if (name.includes('cigaretta')) return 'cigaretta';
-  if (name.includes('fehér bot')) return 'white_cane';
-  if (name.includes('köpcös') || name.includes('dagi') || name.includes('alak')) return 'chubby_figure';
-  if (name.includes('anya') || name.includes('gyerek') || name.includes('anya ')) return 'mother_baby';
-  if (name.includes('göndör') || name.includes('haj')) return 'curly_hair';
+  if (name.includes('pulpitus') || name.includes('ambó') || name.includes('tárgyalóterem') || name.includes('pulpit') || name.includes('gavel') || name.includes('courtroom')) return 'ambo';
+  if (name.includes('asztal') || name.includes('table')) return 'asztal';
+  if (
+    name.includes('jegyzettömb') || name.includes('cetli') || name.includes('akta') || name.includes('újság') || name.includes('híradó') ||
+    name.includes('notepad') || name.includes('slip of paper') || name.includes('case file') || name.includes('newspaper') || name.includes('news broadcast')
+  ) return 'jegyzet';
+  if (name.includes('cigaretta') || name.includes('cigarette')) return 'cigaretta';
+  if (name.includes('fehér bot') || name.includes('white cane')) return 'white_cane';
+  if (name.includes('köpcös') || name.includes('dagi') || name.includes('alak') || name.includes('chubby') || name.includes('stocky')) return 'chubby_figure';
+  if (name.includes('anya') || name.includes('gyerek') || name.includes('mother')) return 'mother_baby';
+  if (name.includes('göndör') || name.includes('haj') || name.includes('curly hair') || name.includes('hair')) return 'curly_hair';
   
   // Specific clothes
-  if (name.includes('harisnya')) return 'stockings';
-  if (name.includes('rendőrruha') || name.includes('egyenruha') || name.includes('uniformis')) return 'police_uniform';
-  if (name.includes('szoknya')) return 'skirt';
-  if (name.includes('fürdőköpeny')) return 'bathrobe';
-  if (name.includes('köpeny') || name.includes('fehér köpeny')) return 'white_coat';
-  if (name.includes('ruha')) return 'dress';
-  if (name.includes('nadrág')) return 'trousers';
-  if (name.includes('lombház') || name.includes('lomb-ház')) return 'treehouse';
-  if (name.includes('fa') || name.includes('tölgy') || name.includes('lomb') || name.includes('erdő')) return 'tree';
-  if (name.includes('nap') || name.includes('napsütés')) return 'sun';
+  if (name.includes('harisnya') || name.includes('stockings')) return 'stockings';
+  if (name.includes('rendőrruha') || name.includes('egyenruha') || name.includes('uniformis') || name.includes('police uniform') || name.includes('uniform')) return 'police_uniform';
+  if (name.includes('szoknya') || name.includes('skirt')) return 'skirt';
+  if (name.includes('fürdőköpeny') || name.includes('bathrobe')) return 'bathrobe';
+  if (name.includes('köpeny') || name.includes('fehér köpeny') || name.includes('white coat')) return 'white_coat';
+  if (name.includes('ruha') || name.includes('dress')) return 'dress';
+  if (name.includes('nadrág') || name.includes('trousers') || name.includes('pants')) return 'trousers';
+  if (name.includes('lombház') || name.includes('lomb-ház') || name.includes('treehouse')) return 'treehouse';
+  if (name.includes('fa') || name.includes('tölgy') || name.includes('lomb') || name.includes('erdő') || name.includes('tree') || name.includes('forest')) return 'tree';
+  if (name.includes('nap') || name.includes('napsütés') || name.includes('sun') || name.includes('sunlight')) return 'sun';
   
   // Bath/Sex shapes
-  if (name.includes('öltöző') || name.includes('oltozo') || name.includes('kabin')) return 'changing_cabin';
-  if (name.includes('töröl') || name.includes('torol') || name.includes('törül')) return 'towel';
-  if (name.includes('szex') || name.includes('pár') || name.includes('par')) return 'parted_legs';
-  if (name.includes('izzad') || name.includes('izzadtság') || name.includes('izzadság')) return 'sweat_drop';
-  if (name.includes('ondó') || name.includes('ondo')) return 'semen_droplet';
-  if (name.includes('vízcsepp') || name.includes('vizcsepp') || name.includes('olaj') || name.includes('vér') || name.includes('ver') || name.includes('eső') || name.includes('eso') || name.includes('drop')) return 'drop';
-  if (name.includes('ebéd')) return 'ebed';
-  if (name.includes('pocsolya')) return 'pocsolya';
-  if (name.includes('kamera')) return 'kamera';
-  if (name.includes('ágy') || name.includes('takaró')) return 'agy';
-  if (name.includes('képernyő') || name.includes('televízió') || name.includes('telefon')) return 'tv';
-  if (name.includes('alagút') || name.includes('szerpentin')) return 'szerpentin';
-  if (name.includes('sír')) return 'sir';
-  if (name.includes('jelvény')) return 'jelveny';
-  if (name.includes('levél')) return 'level';
-  if (name.includes('karkötő')) return 'karkoto';
-  if (name.includes('pisztoly')) return 'pistol';
-  if (name.includes('ház')) return 'haz';
-  if (name.includes('lámpafény')) return 'lampa';
-  if (name.includes('mikrofon')) return 'mikrofon';
-  if (name.includes('kakukk')) return 'madar';
-  if (name.includes('martini') || name.includes('pohár')) return 'martini_glass';
+  if (name.includes('öltöző') || name.includes('oltozo') || name.includes('kabin') || name.includes('changing cabin')) return 'changing_cabin';
+  if (name.includes('töröl') || name.includes('torol') || name.includes('törül') || name.includes('towel')) return 'towel';
+  if (name.includes('szex') || name.includes('pár') || name.includes('par') || name.includes('nudity') || name.includes('couple')) return 'parted_legs';
+  if (name.includes('izzad') || name.includes('izzadtság') || name.includes('izzadság') || name.includes('sweat')) return 'sweat_drop';
+  if (name.includes('ondó') || name.includes('ondo') || name.includes('semen')) return 'semen_droplet';
+  if (
+    name.includes('vízcsepp') || name.includes('vizcsepp') || name.includes('olaj') || name.includes('vér') || name.includes('ver') || name.includes('eső') || name.includes('eso') || name.includes('drop') ||
+    name.includes('rain') || name.includes('blood') || name.includes('oil') || name.includes('water')
+  ) return 'drop';
+  if (name.includes('ebéd') || name.includes('lunch')) return 'ebed';
+  if (name.includes('pocsolya') || name.includes('puddle')) return 'pocsolya';
+  if (name.includes('kamera') || name.includes('camera')) return 'kamera';
+  if (name.includes('ágy') || name.includes('takaró') || name.includes('bed') || name.includes('blanket') || name.includes('sofa')) return 'agy';
+  if (name.includes('képernyő') || name.includes('televízió') || name.includes('telefon') || name.includes('tv') || name.includes('television') || name.includes('screen') || name.includes('telephone')) return 'tv';
+  if (name.includes('alagút') || name.includes('szerpentin') || name.includes('tunnel') || name.includes('switchback')) return 'szerpentin';
+  if (name.includes('sír') || name.includes('grave')) return 'sir';
+  if (name.includes('jelvény') || name.includes('badge')) return 'jelveny';
+  if (name.includes('levél') || name.includes('letter')) return 'level';
+  if (name.includes('karkötő') || name.includes('bracelet')) return 'karkoto';
+  if (name.includes('pisztoly') || name.includes('pistol')) return 'pistol';
+  if (name.includes('ház') || name.includes('house')) return 'haz';
+  if (name.includes('lámpafény') || name.includes('lampa') || name.includes('lamplight')) return 'lampa';
+  if (name.includes('mikrofon') || name.includes('microphone')) return 'mikrofon';
+  if (name.includes('kakukk') || name.includes('madár') || name.includes('cuckoo') || name.includes('bird')) return 'madar';
+  if (name.includes('martini') || name.includes('pohár') || name.includes('martini glass')) return 'martini_glass';
   if (name.includes('hotel') || name.includes('szálloda') || name.includes('corinthia')) return 'hotel';
-  if (name.includes('limuzin') || name.includes('limo')) return 'limo';
-  if (name.includes('villáskulcs') || name.includes('szerelőkulcs') || name.includes('kulcs')) return 'wrench';
-  if (name.includes('ballonkabát') || name.includes('ballon') || name.includes('kabát')) return 'coat';
-  if (name.includes('wc csésze') || name.includes('wccsésze') || name.includes('wc-csésze') || name.includes('wckabin') || name.includes('wcajtó') || name.includes('wc kabin') || name.includes('wc')) return 'toilet_bowl';
+  if (name.includes('limuzin') || name.includes('limo') || name.includes('limousine')) return 'limo';
+  if (name.includes('villáskulcs') || name.includes('szerelőkulcs') || name.includes('kulcs') || name.includes('wrench')) return 'wrench';
+  if (name.includes('ballonkabát') || name.includes('ballon') || name.includes('kabát') || name.includes('coat') || name.includes('trench')) return 'coat';
+  if (
+    name.includes('wc csésze') || name.includes('wccsésze') || name.includes('wc-csésze') || name.includes('wckabin') || name.includes('wcajtó') || name.includes('wc kabin') || name.includes('wc') ||
+    name.includes('toilet') || name.includes('toilet bowl')
+  ) return 'toilet_bowl';
   
   // Dynamic open vs closed books
-  if (name.includes('könyvtár') || name.includes('könyv')) {
+  if (name.includes('könyvtár') || name.includes('könyv') || name.includes('book') || name.includes('library')) {
     return index % 2 === 0 ? 'book_open' : 'book_closed';
   }
   

@@ -1,6 +1,26 @@
 import React from 'react';
 import './TableOfContents.css';
 
+// UI Localization Dictionary
+const TRANSLATIONS = {
+  HU: {
+    toc: "Tartalomjegyzék",
+    bookmark: "Könyvjelző: ",
+    back: "Vissza a könyvtárhoz",
+    fontSize: "Betűméret",
+    decFontSize: "Betűméret csökkentése",
+    incFontSize: "Betűméret növelése"
+  },
+  EN: {
+    toc: "Table of Contents",
+    bookmark: "Bookmark: ",
+    back: "Back to Library",
+    fontSize: "Font Size",
+    decFontSize: "Decrease font size",
+    incFontSize: "Increase font size"
+  }
+};
+
 export default function TableOfContents({
   chapters,
   currentChapterIndex,
@@ -10,8 +30,11 @@ export default function TableOfContents({
   bookmarks,
   fontSize,
   onFontSizeChange,
-  onBackToLibrary
+  onBackToLibrary,
+  language = 'HU'
 }) {
+  const t = TRANSLATIONS[language] || TRANSLATIONS.HU;
+
   return (
     <>
       {/* Backdrop overlay */}
@@ -24,7 +47,7 @@ export default function TableOfContents({
       <div className={`toc-drawer ${isOpen ? 'is-open' : ''}`}>
         <header className="toc-header">
           <div className="toc-title-group">
-            <h2 className="toc-title">Tartalomjegyzék</h2>
+            <h2 className="toc-title">{t.toc}</h2>
             <p className="toc-subtitle">Neon Nights &bull; Anton Martin</p>
           </div>
           <button 
@@ -43,6 +66,7 @@ export default function TableOfContents({
           {chapters.map((ch) => {
             const isActive = ch.index === currentChapterIndex;
             const isBookmarked = bookmarks && bookmarks[ch.index] !== undefined;
+            const isIntro = ch.title === "Bevezetés" || ch.title === "Introduction";
             return (
               <button
                 key={ch.index}
@@ -53,7 +77,7 @@ export default function TableOfContents({
                 }}
               >
                 <div className="toc-item-number">
-                  {ch.title === "Bevezetés" ? "★" : ch.index}
+                  {isIntro ? "★" : ch.index}
                 </div>
                 <div className="toc-item-content">
                   <div className="toc-item-title">{ch.title}</div>
@@ -62,7 +86,7 @@ export default function TableOfContents({
                   const chTotalChars = ch.paragraphs.join('\n').length;
                   const pct = chTotalChars > 0 ? (bookmarks[ch.index] / chTotalChars) * 100 : 0;
                   return (
-                    <div className="toc-item-bookmark" title={`Könyvjelző: ${pct.toFixed(0)}%`}>
+                    <div className="toc-item-bookmark" title={`${t.bookmark}${pct.toFixed(0)}%`}>
                       <svg viewBox="0 0 24 24" width="16" height="16" fill="var(--accent-color)" stroke="none">
                         <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
                       </svg>
@@ -80,23 +104,23 @@ export default function TableOfContents({
           <button 
             className="toc-library-btn"
             onClick={onBackToLibrary}
-            title="Vissza a könyvtárhoz"
+            title={t.back}
           >
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
               <polyline points="9 22 9 12 15 12 15 22" />
             </svg>
-            <span>Vissza a könyvtárhoz</span>
+            <span>{t.back}</span>
           </button>
 
           <div className="toc-font-settings">
-            <span className="toc-font-label">Betűméret</span>
+            <span className="toc-font-label">{t.fontSize}</span>
             <div className="toc-font-controls">
               <button 
                 className="toc-font-btn"
                 onClick={() => onFontSizeChange(Math.max(14, fontSize - 1))}
                 disabled={fontSize <= 14}
-                title="Betűméret csökkentése"
+                title={t.decFontSize}
               >
                 A-
               </button>
@@ -108,14 +132,14 @@ export default function TableOfContents({
                 value={fontSize} 
                 onChange={(e) => onFontSizeChange(Number(e.target.value))}
                 className="toc-font-slider"
-                title={`Betűméret: ${fontSize}px`}
+                title={`${t.fontSize}: ${fontSize}px`}
               />
               
               <button 
                 className="toc-font-btn"
                 onClick={() => onFontSizeChange(Math.min(26, fontSize + 1))}
                 disabled={fontSize >= 26}
-                title="Betűméret növelése"
+                title={t.incFontSize}
               >
                 A+
               </button>

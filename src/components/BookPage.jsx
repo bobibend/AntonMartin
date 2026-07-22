@@ -16,8 +16,32 @@ export default function BookPage({
   onToggleBookmark,
   currentChapterIndex,
   totalChapters,
-  onSelectChapter
+  onSelectChapter,
+  language = 'HU'
 }) {
+  const TRANSLATIONS = {
+    HU: {
+      bookmarkSaved: "Könyvjelző elmentve ezen a lapon",
+      prevChapter: "Előző fejezet",
+      nextChapter: "Következő fejezet",
+      chars: "karakter",
+      removeBookmark: "Könyvjelző eltávolítása erről a lapról",
+      addBookmark: "Könyvjelző elmentése erről a lapról",
+      bookmarkLabel: "Könyvjelző elmentése"
+    },
+    EN: {
+      bookmarkSaved: "Bookmark saved on this page",
+      prevChapter: "Previous chapter",
+      nextChapter: "Next chapter",
+      chars: "characters",
+      removeBookmark: "Remove bookmark from this page",
+      addBookmark: "Save bookmark on this page",
+      bookmarkLabel: "Save bookmark"
+    }
+  };
+
+  const t = TRANSLATIONS[language] || TRANSLATIONS.HU;
+
   const contentRef = useRef(null);
   const containerRef = useRef(null);
   const clickTimeoutRef = useRef(null);
@@ -187,47 +211,52 @@ export default function BookPage({
     };
   }, [columnGap, calculatePages]);
 
-  // Restore scroll position when chapter mounts or changes, to preserve the current page progress
+  const lastChapterRef = useRef(chapterTitle);
+
+  // Unified scroll synchronization effect for page and chapter transitions
   useEffect(() => {
     const el = contentRef.current;
     if (el && (bookmarkCharIndex === undefined || bookmarkCharIndex === null)) {
-      const restoreScroll = () => {
-        const pageWidth = el.clientWidth + columnGapRef.current;
-        const targetScrollX = currentPageIndexRef.current * pageWidth;
-        el.scrollLeft = targetScrollX;
-        setScrollLeft(targetScrollX);
-      };
-      restoreScroll();
-      // Schedule a second restore in case of asynchronous layout reflows
-      const timer = setTimeout(restoreScroll, 100);
-      return () => clearTimeout(timer);
+      const isNewChapter = lastChapterRef.current !== chapterTitle;
+      lastChapterRef.current = chapterTitle;
+
+      const pageWidth = el.clientWidth + columnGap;
+      const targetScroll = currentPageIndex * pageWidth;
+
+      if (isNewChapter) {
+        // Instant scroll for new chapter
+        const restoreScroll = () => {
+          el.scrollLeft = targetScroll;
+          el.scrollTop = 0;
+          setScrollLeft(targetScroll);
+          setScrollTop(0);
+        };
+        restoreScroll();
+        // Schedule a second restore in case of asynchronous layout reflows
+        const timer = setTimeout(restoreScroll, 100);
+        return () => clearTimeout(timer);
+      } else {
+        // Smooth scroll for page turn in same chapter
+        const maxScrollX = el.scrollWidth - el.clientWidth;
+        const maxScrollY = el.scrollHeight - el.clientHeight;
+        if (!(maxScrollY > maxScrollX && maxScrollY > 10)) {
+          if (Math.abs(el.scrollLeft - targetScroll) > 10) {
+            el.scrollTo({
+              left: targetScroll,
+              behavior: 'smooth'
+            });
+          }
+        }
+      }
+    } else if (el) {
+      lastChapterRef.current = chapterTitle;
     }
-  }, [chapterTitle, bookmarkCharIndex]);
+  }, [currentPageIndex, chapterTitle, columnGap, bookmarkCharIndex]);
 
   // Scroll window to the top on chapter changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, [chapterTitle]);
-
-  // Smooth scroll page transition effect (inside the current chapter)
-  useEffect(() => {
-    const el = contentRef.current;
-    if (el) {
-      const maxScrollX = el.scrollWidth - el.clientWidth;
-      const maxScrollY = el.scrollHeight - el.clientHeight;
-
-      if (!(maxScrollY > maxScrollX && maxScrollY > 10)) {
-        // Horizontal smooth scroll paging
-        const targetScroll = currentPageIndex * (el.clientWidth + columnGap);
-        if (Math.abs(el.scrollLeft - targetScroll) > 10) {
-          el.scrollTo({
-            left: targetScroll,
-            behavior: 'smooth'
-          });
-        }
-      }
-    }
-  }, [currentPageIndex, columnGap]);
 
   // Click vs Double Click handler on the page surface
   const handlePageClick = (e) => {
@@ -322,7 +351,7 @@ export default function BookPage({
       >
         {/* Physical 3D folded bookmark ribbon at top right */}
         {isBookmarkedOnCurrentPage && (
-          <div className="book-page-bookmark-ribbon no-click-paging" title="Könyvjelző elmentve ezen a lapon">
+          <div className="book-page-bookmark-ribbon no-click-paging" title={t.bookmarkSaved}>
             <svg viewBox="0 0 24 38" width="24" height="38" fill="var(--accent-color)" stroke="none">
               <path d="M0 0h24v38l-12-8-12 8z" />
             </svg>
@@ -340,7 +369,7 @@ export default function BookPage({
                 e.stopPropagation();
                 onSelectChapter(currentChapterIndex - 1);
               }}
-              title="Előző fejezet"
+              title={t.prevChapter}
               aria-label="Previous Chapter"
             >
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -357,7 +386,7 @@ export default function BookPage({
                 e.stopPropagation();
                 onSelectChapter(currentChapterIndex + 1);
               }}
-              title="Következő fejezet"
+              title={t.nextChapter}
               aria-label="Next Chapter"
             >
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -396,7 +425,7 @@ export default function BookPage({
         <footer className="book-footer no-click-paging">
           <div className="book-footer-divider"></div>
           <div className="book-footer-info">
-            <div className="book-chapter-progress" title={`${currentCharIndex} / ${totalChars} karakter (${pct.toFixed(0)}%)`}>
+            <div className="book-chapter-progress" title={`${currentCharIndex} / ${totalChars} ${t.chars} (${pct.toFixed(0)}%)`}>
               <div className="book-progress-track">
                 <div
                   className="book-progress-fill"
@@ -415,8 +444,8 @@ export default function BookPage({
                   onToggleBookmark(currentCharIndex);
                 }
               }}
-              title={isBookmarkedOnCurrentPage ? "Könyvjelző eltávolítása erről a lapról" : "Könyvjelző elmentése erről a lapról"}
-              aria-label="Könyvjelző elmentése"
+              title={isBookmarkedOnCurrentPage ? t.removeBookmark : t.addBookmark}
+              aria-label={t.bookmarkLabel}
             >
               <svg viewBox="0 0 24 24" width="18" height="18" fill={isBookmarkedOnCurrentPage ? "var(--accent-color)" : "none"} stroke="currentColor" strokeWidth="2">
                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />

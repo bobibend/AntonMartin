@@ -1,5 +1,6 @@
-// Mapped CSS pastel colors based on Hungarian names in Excel
+// Mapped CSS pastel colors based on Hungarian and English names
 export const COLOR_PALETTES = {
+  // Hungarian names
   'fehér': '#FDFDFD',
   'rózsaszín': '#FFD1DC',
   'vörös': '#FFB7B2',
@@ -43,7 +44,50 @@ export const COLOR_PALETTES = {
   'élénk napfény': '#FCF3CF',
   'kadmiumsárga': '#FCF3CF',
   'márvány': '#EAEDED',
-  'éjsötét': '#D6DBDF'
+  'éjsötét': '#D6DBDF',
+
+  // English names
+  'white': '#FDFDFD',
+  'pink': '#FFD1DC',
+  'red': '#FFB7B2',
+  'cold blue': '#D4E6F1',
+  'dark blue': '#AEB6BF',
+  'gray': '#E5E7E9',
+  'pale yellow': '#FEF9E7',
+  'sunlight': '#FCF3CF',
+  'misty gray': '#EAEDED',
+  'gold': '#FDEBD0',
+  'pale gray': '#F2F3F4',
+  'azure blue': '#E0F7FA',
+  'light blue': '#E1F5FE',
+  'moss green': '#E8F8F5',
+  'dark gray': '#D5D8DC',
+  'brown': '#EDBB99',
+  'black': '#ABB2B9',
+  'angry green': '#D5F5E3',
+  'blue': '#EBF5FB',
+  'pale blue': '#E0F2F1',
+  'grass green': '#E8F8F5',
+  'police blue': '#E8EAF6',
+  'light gray': '#F4F6F6',
+  'pale brown': '#F5CBA7',
+  'light brown': '#F5CBA7',
+  'pale amber': '#FCF3CF',
+  'dark': '#AEB6BF',
+  'quadrum': '#E5E8E8',
+  'pale burgundy': '#FADBD8',
+  'warm white': '#FEFDE8',
+  'green': '#EAFAF1',
+  'beige': '#F5F5DC',
+  'golden yellow': '#FCF3CF',
+  'yellow': '#FCF3CF',
+  'oak brown': '#D7CCC8',
+  'purple': '#EBDEF0',
+  'blue-gray': '#E5E8E8',
+  'bright sunlight': '#FCF3CF',
+  'cadmium yellow': '#FCF3CF',
+  'marble': '#EAEDED',
+  'pitch black': '#D6DBDF'
 };
 
 // Fallback palette constants
@@ -62,32 +106,57 @@ export function getRandomVibrantColor() {
            !k.includes('sötét') && 
            !k.includes('köd') && 
            !k.includes('márvány') && 
-           !k.includes('kvadrum');
+           !k.includes('kvadrum') &&
+           !k.includes('white') &&
+           !k.includes('gray') &&
+           !k.includes('black') &&
+           !k.includes('dark') &&
+           !k.includes('misty') &&
+           !k.includes('marble') &&
+           !k.includes('quadrum');
   });
   const randomKey = keys[Math.floor(Math.random() * keys.length)];
   return COLOR_PALETTES[randomKey];
 }
 
-// Resolve book page background (very soft pastel tinted warm off-white/törtfehér)
+// Resolve book page background (very soft pastel tinted warm off-white)
 export function getPageBgColor(colArray) {
   if (!Array.isArray(colArray) || colArray.length === 0 || typeof colArray[0] !== 'string') return '#FAF7EE'; // default warm parchment
   const primary = colArray[0].toLowerCase().trim();
-  if (primary.includes('rózsaszín') || primary.includes('vörös') || primary.includes('piros') || primary.includes('bordó')) {
+  if (
+    primary.includes('rózsaszín') || primary.includes('vörös') || primary.includes('piros') || primary.includes('bordó') ||
+    primary.includes('pink') || primary.includes('red') || primary.includes('burgundy')
+  ) {
     return '#FAF0EE'; // soft warm rose paper
   }
-  if (primary.includes('kék') || primary.includes('azúr') || primary.includes('rendőr')) {
+  if (
+    primary.includes('kék') || primary.includes('azúr') || primary.includes('rendőr') ||
+    primary.includes('blue') || primary.includes('azure') || primary.includes('police')
+  ) {
     return '#EFF2F6'; // soft cool tinted paper
   }
-  if (primary.includes('zöld') || primary.includes('moh') || primary.includes('fű')) {
+  if (
+    primary.includes('zöld') || primary.includes('moh') || primary.includes('fű') ||
+    primary.includes('green') || primary.includes('moss') || primary.includes('grass')
+  ) {
     return '#F0F4F0'; // soft sage green paper
   }
-  if (primary.includes('sárga') || primary.includes('napfény') || primary.includes('arany') || primary.includes('borostyán') || primary.includes('bézs')) {
+  if (
+    primary.includes('sárga') || primary.includes('napfény') || primary.includes('arany') || primary.includes('borostyán') || primary.includes('bézs') ||
+    primary.includes('yellow') || primary.includes('sunlight') || primary.includes('gold') || primary.includes('amber') || primary.includes('beige')
+  ) {
     return '#F6F2E2'; // elegant warm cream paper
   }
-  if (primary.includes('barna') || primary.includes('tölgy')) {
+  if (
+    primary.includes('barna') || primary.includes('tölgy') ||
+    primary.includes('brown') || primary.includes('oak')
+  ) {
     return '#F2EBE0'; // vintage linen/antique paper
   }
-  if (primary.includes('szürke') || primary.includes('fekete') || primary.includes('sötét')) {
+  if (
+    primary.includes('szürke') || primary.includes('fekete') || primary.includes('sötét') ||
+    primary.includes('gray') || primary.includes('black') || primary.includes('dark') || primary.includes('misty') || primary.includes('pitch')
+  ) {
     return '#EDEDF1'; // soft slate paper
   }
   return '#FAF7EE'; // warm parchment paper
@@ -97,10 +166,13 @@ export function getPageBgColor(colArray) {
 export function getPageTextColor(colArray) {
   if (!Array.isArray(colArray) || colArray.length === 0 || typeof colArray[0] !== 'string') return '#231F1A';
   const primary = colArray[0].toLowerCase().trim();
-  if (primary.includes('kék') || primary.includes('azúr') || primary.includes('rendőr')) {
+  if (
+    primary.includes('kék') || primary.includes('azúr') || primary.includes('rendőr') ||
+    primary.includes('blue') || primary.includes('azure') || primary.includes('police')
+  ) {
     return '#152530'; // deep slate navy
   }
-  if (primary.includes('zöld')) {
+  if (primary.includes('zöld') || primary.includes('green')) {
     return '#162816'; // deep dark green
   }
   return '#261F1A'; // deep charcoal warm brown
@@ -110,16 +182,25 @@ export function getPageTextColor(colArray) {
 export function getAccentColor(colArray) {
   if (!Array.isArray(colArray) || colArray.length === 0 || typeof colArray[0] !== 'string') return '#8c7ae6';
   const primary = colArray[0].toLowerCase().trim();
-  if (primary.includes('rózsaszín') || primary.includes('vörös') || primary.includes('piros')) {
+  if (
+    primary.includes('rózsaszín') || primary.includes('vörös') || primary.includes('piros') ||
+    primary.includes('pink') || primary.includes('red')
+  ) {
     return '#E57373';
   }
-  if (primary.includes('kék') || primary.includes('azúr') || primary.includes('rendőr')) {
+  if (
+    primary.includes('kék') || primary.includes('azúr') || primary.includes('rendőr') ||
+    primary.includes('blue') || primary.includes('azure') || primary.includes('police')
+  ) {
     return '#4FC3F7';
   }
-  if (primary.includes('zöld')) {
+  if (primary.includes('zöld') || primary.includes('green')) {
     return '#81C784';
   }
-  if (primary.includes('sárga') || primary.includes('arany') || primary.includes('napfény') || primary.includes('borostyán')) {
+  if (
+    primary.includes('sárga') || primary.includes('arany') || primary.includes('napfény') || primary.includes('borostyán') ||
+    primary.includes('yellow') || primary.includes('gold') || primary.includes('sunlight') || primary.includes('amber')
+  ) {
     return '#D4AC0D';
   }
   return '#8c7ae6';

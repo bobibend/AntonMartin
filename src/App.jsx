@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import bookData from '../book_data.json';
+import bookDataHu from '../book_data.json';
+import bookDataEn from '../book_data_en.json';
 import BackgroundLayer from './components/BackgroundLayer';
 import BookPage from './components/BookPage';
 import TableOfContents from './components/TableOfContents';
@@ -14,6 +15,17 @@ function App() {
   const [landingActive, setLandingActive] = useState(true);
   const [landingExiting, setLandingExiting] = useState(false);
   const [previewData, setPreviewData] = useState(null);
+
+  // Language management
+  const [language, setLanguage] = useState(() => {
+    return localStorage.getItem('nn-language') || 'HU';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('nn-language', language);
+  }, [language]);
+
+  const bookData = language === 'EN' ? bookDataEn : bookDataHu;
 
   // Hash-based routing listener
   useEffect(() => {
@@ -32,10 +44,10 @@ function App() {
           setPreviewData({
             title: docName.replace(/[-_]/g, ' '),
             author: 'Anton Martin',
-            subtitle: 'Preview Dokumentum',
+            subtitle: 'Preview Document',
             paragraphs: [
-              `A kért preview dokumentum ("${docName}") nem található.`,
-              'Győződj meg róla, hogy a fájl létezik a preview/html/ mappában (pl. interju.json vagy interju.html néven).'
+              `The requested preview document ("${docName}") was not found.`,
+              'Please make sure that the file exists in the preview/html/ folder (e.g. as interju.json or interju.html).'
             ],
             theme: {
               bgColor1: '#ffd1dc',
@@ -184,6 +196,7 @@ function App() {
           window.location.hash = '#/library';
           setTocOpen(false);
         }}
+        language={language}
       />
 
       {/* Main book structure */}
@@ -193,7 +206,7 @@ function App() {
           className="nav-arrow-btn left-arrow no-click-paging"
           onClick={handlePageBackward}
           disabled={!previewData && currentChapterIndex === 0 && currentPageIndex === 0}
-          title="Előző oldal"
+          title={language === 'EN' ? "Previous Page" : "Előző oldal"}
           aria-label="Previous Page"
         >
           <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -229,6 +242,7 @@ function App() {
           currentChapterIndex={previewData ? 0 : currentChapterIndex}
           totalChapters={previewData ? 1 : bookData.chapters.length}
           onSelectChapter={handleSelectChapter}
+          language={language}
         />
 
         {/* Floating Right Paging Arrow */}
@@ -236,7 +250,7 @@ function App() {
           className="nav-arrow-btn right-arrow no-click-paging"
           onClick={handlePageForward}
           disabled={currentChapterIndex === bookData.chapters.length - 1 && currentPageIndex === totalPages - 1}
-          title="Következő oldal"
+          title={language === 'EN' ? "Next Page" : "Következő oldal"}
           aria-label="Next Page"
         >
           <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -249,7 +263,7 @@ function App() {
       <button 
         className="floating-toc-trigger no-click-paging"
         onClick={() => setTocOpen(true)}
-        title="Tartalomjegyzék és Beállítások"
+        title={language === 'EN' ? "Table of Contents and Settings" : "Tartalomjegyzék és Beállítások"}
         aria-label="Open Table of Contents"
       >
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -266,6 +280,8 @@ function App() {
           bookTitle={bookData.title}
           author={bookData.author}
           isBlurred={landingActive && !landingExiting}
+          language={language}
+          onLanguageChange={setLanguage}
         />
       )}
 
@@ -279,6 +295,7 @@ function App() {
             window.location.hash = '#/library';
           }}
           onStartExit={() => setLandingExiting(true)}
+          language={language}
         />
       )}
     </>
