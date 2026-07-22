@@ -6,6 +6,7 @@ import BookPage from './components/BookPage';
 import TableOfContents from './components/TableOfContents';
 import LibraryPortal from './components/LibraryPortal';
 import LandingPage from './components/LandingPage';
+import SelectionPortal from './components/SelectionPortal';
 import { applyChapterTheme } from './utils/themeHelper';
 import { fetchPreviewDocument } from './utils/previewLoader';
 import './index.css';
@@ -15,6 +16,7 @@ function App() {
   const [landingActive, setLandingActive] = useState(true);
   const [landingExiting, setLandingExiting] = useState(false);
   const [previewData, setPreviewData] = useState(null);
+  const [portalActive, setPortalActive] = useState(false);
 
   // Language management
   const [language, setLanguage] = useState(() => {
@@ -60,22 +62,31 @@ function App() {
             shapes: ['könyv', 'toll']
           });
         }
+      } else if (hash === '#/portal') {
+        setPreviewData(null);
+        setLandingActive(false);
+        setLandingExiting(false);
+        setReaderStarted(false);
+        setPortalActive(true);
       } else if (hash === '#/library') {
         setPreviewData(null);
         setLandingActive(false);
         setLandingExiting(false);
         setReaderStarted(false);
+        setPortalActive(false);
       } else if (hash === '#/reader') {
         setPreviewData(null);
         setLandingActive(false);
         setLandingExiting(false);
         setReaderStarted(true);
+        setPortalActive(false);
       } else {
         // Default entry path is landing
         setPreviewData(null);
         setLandingActive(true);
         setLandingExiting(false);
         setReaderStarted(false);
+        setPortalActive(false);
       }
     };
 
@@ -273,8 +284,17 @@ function App() {
         </svg>
       </button>
 
+      {/* Selection Portal Page (shows between Landing and Library) */}
+      {!readerStarted && portalActive && (
+        <SelectionPortal
+          language={language}
+          onLanguageChange={setLanguage}
+          onSelectNeonNights={() => { window.location.hash = '#/library'; }}
+        />
+      )}
+
       {/* Library Portal Page overlaid on top (if not fully started) */}
-      {!readerStarted && (
+      {!readerStarted && !portalActive && (
         <LibraryPortal 
           onLaunchReader={() => { window.location.hash = '#/reader'; }} 
           bookTitle={bookData.title}
@@ -292,7 +312,7 @@ function App() {
           onEnter={() => {
             setLandingActive(false);
             setLandingExiting(false);
-            window.location.hash = '#/library';
+            window.location.hash = '#/portal';
           }}
           onStartExit={() => setLandingExiting(true)}
           language={language}
