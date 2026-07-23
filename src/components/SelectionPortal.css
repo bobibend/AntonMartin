@@ -8,7 +8,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  z-index: 1000;
+  z-index: 100;
   box-sizing: border-box;
   overflow-y: auto;
   padding: 20px 20px 15px 20px;
@@ -16,6 +16,24 @@
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   color: #fff;
+  
+  /* Slide-down entrance transition */
+  animation: garageDoorClose 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  /* Smooth blur fade out when entering portal */
+  filter: blur(0px);
+  transition: filter 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.selection-portal-container.is-blurred-for-landing {
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.selection-portal-container.is-exiting {
+  /* Slide-up exit transition */
+  animation: garageDoorOpen 0.45s cubic-bezier(0.7, 0, 0.84, 0) both;
+  pointer-events: none;
 }
 
 .selection-portal-content {
@@ -358,6 +376,24 @@
 @keyframes scaleIn {
   from { transform: scale(0.95); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes garageDoorClose {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes garageDoorOpen {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
 }
 
 /* Responsive */

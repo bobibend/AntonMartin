@@ -17,6 +17,7 @@ function App() {
   const [landingExiting, setLandingExiting] = useState(false);
   const [previewData, setPreviewData] = useState(null);
   const [portalActive, setPortalActive] = useState(false);
+  const [isTransitioningToReader, setIsTransitioningToReader] = useState(false);
 
   // Language management
   const [language, setLanguage] = useState(() => {
@@ -33,6 +34,7 @@ function App() {
   useEffect(() => {
     const handleHashChange = async () => {
       const hash = window.location.hash;
+      setIsTransitioningToReader(false);
       if (hash.startsWith('#/preview/')) {
         const docName = hash.replace('#/preview/', '');
         setLandingActive(false);
@@ -188,118 +190,128 @@ function App() {
   return (
     <>
       {/* Background layer */}
-      <BackgroundLayer 
-        shapes={previewData ? (previewData.shapes || ['könyv', 'toll']) : currentChapter.shapes}
-        hideTitle={landingActive}
-      />
+      {(readerStarted || isTransitioningToReader) && (
+        <BackgroundLayer 
+          shapes={previewData ? (previewData.shapes || ['könyv', 'toll']) : currentChapter.shapes}
+          hideTitle={landingActive}
+        />
+      )}
 
       {/* Slide-out Table of Contents drawer */}
-      <TableOfContents
-        chapters={bookData.chapters}
-        currentChapterIndex={currentChapterIndex}
-        isOpen={tocOpen}
-        onClose={() => setTocOpen(false)}
-        onSelectChapter={handleSelectChapter}
-        bookmarks={bookmarks}
-        fontSize={fontSize}
-        onFontSizeChange={setFontSize}
-        onBackToLibrary={() => {
-          window.location.hash = '#/library';
-          setTocOpen(false);
-        }}
-        language={language}
-      />
-
-      {/* Main book structure */}
-      <div className="main-reader-container">
-        {/* Floating Left Paging Arrow */}
-        <button 
-          className="nav-arrow-btn left-arrow no-click-paging"
-          onClick={handlePageBackward}
-          disabled={!previewData && currentChapterIndex === 0 && currentPageIndex === 0}
-          title={language === 'EN' ? "Previous Page" : "Előző oldal"}
-          aria-label="Previous Page"
-        >
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-        </button>
-
-        {/* Dynamic book page content */}
-        <BookPage
-          chapterTitle={previewData ? previewData.title : currentChapter.title}
-          paragraphs={previewData ? previewData.paragraphs : currentChapter.paragraphs}
-          currentPageIndex={currentPageIndex}
-          onPageChange={setCurrentPageIndex}
-          onTotalPagesChange={handleTotalPagesChange}
-          fontSize={fontSize}
-          bookTitle={previewData ? (previewData.subtitle || 'Preview') : bookData.title}
-          author={previewData ? (previewData.author || bookData.author) : bookData.author}
-          onPageForward={handlePageForward}
-          onPageBackward={handlePageBackward}
-          bookmarkCharIndex={previewData ? null : bookmarks[currentChapterIndex]}
-          onToggleBookmark={(charIndex) => {
-            if (previewData) return;
-            setBookmarks(prev => {
-              const updated = { ...prev };
-              if (charIndex === null || charIndex === undefined) {
-                delete updated[currentChapterIndex];
-              } else {
-                updated[currentChapterIndex] = charIndex;
-              }
-              return updated;
-            });
-          }}
-          currentChapterIndex={previewData ? 0 : currentChapterIndex}
-          totalChapters={previewData ? 1 : bookData.chapters.length}
+      {readerStarted && (
+        <TableOfContents
+          chapters={bookData.chapters}
+          currentChapterIndex={currentChapterIndex}
+          isOpen={tocOpen}
+          onClose={() => setTocOpen(false)}
           onSelectChapter={handleSelectChapter}
+          bookmarks={bookmarks}
+          fontSize={fontSize}
+          onFontSizeChange={setFontSize}
+          onBackToLibrary={() => {
+            window.location.hash = '#/library';
+            setTocOpen(false);
+          }}
           language={language}
         />
+      )}
 
-        {/* Floating Right Paging Arrow */}
-        <button 
-          className="nav-arrow-btn right-arrow no-click-paging"
-          onClick={handlePageForward}
-          disabled={currentChapterIndex === bookData.chapters.length - 1 && currentPageIndex === totalPages - 1}
-          title={language === 'EN' ? "Next Page" : "Következő oldal"}
-          aria-label="Next Page"
-        >
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
-        </button>
-      </div>
+      {/* Main book structure */}
+      {readerStarted && (
+        <div className="main-reader-container">
+          {/* Floating Left Paging Arrow */}
+          <button 
+            className="nav-arrow-btn left-arrow no-click-paging"
+            onClick={handlePageBackward}
+            disabled={!previewData && currentChapterIndex === 0 && currentPageIndex === 0}
+            title={language === 'EN' ? "Previous Page" : "Előző oldal"}
+            aria-label="Previous Page"
+          >
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+          </button>
+
+          {/* Dynamic book page content */}
+          <BookPage
+            chapterTitle={previewData ? previewData.title : currentChapter.title}
+            paragraphs={previewData ? previewData.paragraphs : currentChapter.paragraphs}
+            currentPageIndex={currentPageIndex}
+            onPageChange={setCurrentPageIndex}
+            onTotalPagesChange={handleTotalPagesChange}
+            fontSize={fontSize}
+            bookTitle={previewData ? (previewData.subtitle || 'Preview') : bookData.title}
+            author={previewData ? (previewData.author || bookData.author) : bookData.author}
+            onPageForward={handlePageForward}
+            onPageBackward={handlePageBackward}
+            bookmarkCharIndex={previewData ? null : bookmarks[currentChapterIndex]}
+            onToggleBookmark={(charIndex) => {
+              if (previewData) return;
+              setBookmarks(prev => {
+                const updated = { ...prev };
+                if (charIndex === null || charIndex === undefined) {
+                  delete updated[currentChapterIndex];
+                } else {
+                  updated[currentChapterIndex] = charIndex;
+                }
+                return updated;
+              });
+            }}
+            currentChapterIndex={previewData ? 0 : currentChapterIndex}
+            totalChapters={previewData ? 1 : bookData.chapters.length}
+            onSelectChapter={handleSelectChapter}
+            language={language}
+          />
+
+          {/* Floating Right Paging Arrow */}
+          <button 
+            className="nav-arrow-btn right-arrow no-click-paging"
+            onClick={handlePageForward}
+            disabled={currentChapterIndex === bookData.chapters.length - 1 && currentPageIndex === totalPages - 1}
+            title={language === 'EN' ? "Next Page" : "Következő oldal"}
+            aria-label="Next Page"
+          >
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </button>
+        </div>
+      )}
 
       {/* Sleek Minimalist Floating Menu Button to Open TOC */}
-      <button 
-        className="floating-toc-trigger no-click-paging"
-        onClick={() => setTocOpen(true)}
-        title={language === 'EN' ? "Table of Contents and Settings" : "Tartalomjegyzék és Beállítások"}
-        aria-label="Open Table of Contents"
-      >
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="6" x2="15" y2="6" />
-          <line x1="3" y1="18" x2="18" y2="18" />
-        </svg>
-      </button>
+      {readerStarted && (
+        <button 
+          className="floating-toc-trigger no-click-paging"
+          onClick={() => setTocOpen(true)}
+          title={language === 'EN' ? "Table of Contents and Settings" : "Tartalomjegyzék és Beállítások"}
+          aria-label="Open Table of Contents"
+        >
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="15" y2="6" />
+            <line x1="3" y1="18" x2="18" y2="18" />
+          </svg>
+        </button>
+      )}
 
       {/* Selection Portal Page (shows between Landing and Library) */}
-      {!readerStarted && portalActive && (
+      {!readerStarted && (portalActive || landingActive) && (
         <SelectionPortal
           language={language}
           onLanguageChange={setLanguage}
           onSelectNeonNights={() => { window.location.hash = '#/library'; }}
+          isBlurred={landingActive && !landingExiting}
         />
       )}
 
       {/* Library Portal Page overlaid on top (if not fully started) */}
-      {!readerStarted && !portalActive && (
+      {!readerStarted && !portalActive && !landingActive && (
         <LibraryPortal 
           onLaunchReader={() => { window.location.hash = '#/reader'; }} 
+          onStartReading={() => setIsTransitioningToReader(true)}
           bookTitle={bookData.title}
           author={bookData.author}
-          isBlurred={landingActive && !landingExiting}
+          isBlurred={false}
           language={language}
           onLanguageChange={setLanguage}
         />
@@ -310,8 +322,6 @@ function App() {
         <LandingPage 
           isExiting={landingExiting}
           onEnter={() => {
-            setLandingActive(false);
-            setLandingExiting(false);
             window.location.hash = '#/portal';
           }}
           onStartExit={() => setLandingExiting(true)}

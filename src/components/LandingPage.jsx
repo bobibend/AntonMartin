@@ -6,7 +6,7 @@ export default function LandingPage({ isExiting, onEnter, onStartExit }) {
     onStartExit();
     setTimeout(() => {
       onEnter();
-    }, 600); // match transition duration in CSS
+    }, 350); // match transition duration in CSS
   };
 
   return (

@@ -26,7 +26,11 @@ body {
   overflow: hidden; /* Prevent scrolling the body, scroll inside the reader container */
   height: 100vh;
   width: 100vw;
-  background-color: #f0f0f0;
+  background-color: #07050a;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(255, 209, 220, 0.08) 0px, transparent 55%),
+    radial-gradient(at 100% 100%, rgba(212, 230, 241, 0.06) 0px, transparent 55%),
+    radial-gradient(at 50% 50%, rgba(13, 10, 20, 1) 0px, #050407 100%);
 }
 
 #root {

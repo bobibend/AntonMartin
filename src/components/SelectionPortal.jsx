@@ -28,12 +28,20 @@ const TRANSLATIONS = {
   }
 };
 
-export default function SelectionPortal({ language, onLanguageChange, onSelectNeonNights }) {
+export default function SelectionPortal({ language, onLanguageChange, onSelectNeonNights, isBlurred }) {
   const [showModal, setShowModal] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
   const t = TRANSLATIONS[language] || TRANSLATIONS.HU;
 
+  const handleNeonNightsClick = () => {
+    setIsExiting(true);
+    setTimeout(() => {
+      onSelectNeonNights();
+    }, 420);
+  };
+
   return (
-    <div className="selection-portal-container">
+    <div className={`selection-portal-container ${isExiting ? 'is-exiting' : ''} ${isBlurred ? 'is-blurred-for-landing' : ''}`}>
       {/* Dynamic Language Selector Toggle */}
       <div className="selection-lang-selector">
         <button 
@@ -57,10 +65,10 @@ export default function SelectionPortal({ language, onLanguageChange, onSelectNe
 
         <div className="selection-grid">
           {/* Neon Nights Book Tile */}
-          <div className="selection-card neon-nights-card" onClick={onSelectNeonNights}>
+          <div className="selection-card neon-nights-card" onClick={handleNeonNightsClick}>
             <div className="selection-card-image-wrapper">
               <img 
-                src="/cover/Neon Nights ikon.png" 
+                src="/cover/Neon%20Nights%20ikon.webp" 
                 alt={t.neonNightsTitle} 
                 className="selection-card-image"
               />

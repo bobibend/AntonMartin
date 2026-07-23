@@ -58,7 +58,7 @@ const TRANSLATIONS = {
   }
 };
 
-export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlurred, language, onLanguageChange }) {
+export default function LibraryPortal({ onLaunchReader, onStartReading, bookTitle, author, isBlurred, language, onLanguageChange }) {
   const centerVideoRef = useRef(null);
   const [centerHovered, setCenterHovered] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
@@ -95,6 +95,9 @@ export default function LibraryPortal({ onLaunchReader, bookTitle, author, isBlu
 
   const handleLaunchClick = () => {
     setIsExiting(true);
+    if (onStartReading) {
+      onStartReading();
+    }
     setTimeout(() => {
       onLaunchReader();
     }, 420);
