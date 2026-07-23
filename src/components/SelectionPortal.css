@@ -44,11 +44,45 @@
   width: 100%;
 }
 
+/* Back button */
+.selection-back-btn {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  color: rgba(255, 255, 255, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 110;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.selection-back-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.05);
+}
+
+.selection-back-btn:active {
+  transform: scale(0.95);
+}
+
 /* Language selector */
 .selection-lang-selector {
   position: absolute;
   top: 25px;
-  left: 25px;
+  left: 82px;
   display: flex;
   gap: 4px;
   background: rgba(255, 255, 255, 0.05);
@@ -80,6 +114,54 @@
   background: rgba(255, 255, 255, 0.15);
   color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Floating Support Button */
+.selection-support-btn {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 21px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  z-index: 100;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.support-btn-text {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  transition: color 0.3s ease;
+}
+
+.selection-support-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.05) translateY(-1px);
+  color: #fff;
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.35),
+    0 0 15px rgba(255, 255, 255, 0.05);
+}
+
+.selection-support-btn:active {
+  transform: scale(1) translateY(0);
 }
 
 /* Header */
@@ -402,6 +484,18 @@
     padding: 80px 20px 40px 20px;
   }
   
+  .selection-back-btn {
+    top: 20px;
+    left: 20px;
+    width: 38px;
+    height: 38px;
+  }
+  
+  .selection-lang-selector {
+    top: 20px;
+    left: 70px;
+  }
+  
   .selection-portal-title {
     font-size: 2.2rem;
   }
@@ -414,5 +508,19 @@
   
   .selection-card-image-wrapper {
     height: 240px;
+  }
+
+  .selection-support-btn {
+    top: 20px;
+    right: 20px;
+    height: 38px;
+    padding: 0 12px;
+    border-radius: 19px;
+    gap: 6px;
+  }
+
+  .support-btn-text {
+    font-size: 11px;
+    letter-spacing: 1.2px;
   }
 }

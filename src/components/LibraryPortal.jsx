@@ -103,6 +103,13 @@ export default function LibraryPortal({ onLaunchReader, onStartReading, bookTitl
     }, 420);
   };
 
+  const handleBackClick = () => {
+    setIsExiting(true);
+    setTimeout(() => {
+      window.location.hash = '#/portal';
+    }, 420);
+  };
+
   const handleBookClick = () => {
     if (getCookie('nn-age-verified') === 'true') {
       handleLaunchClick();
@@ -119,6 +126,14 @@ export default function LibraryPortal({ onLaunchReader, onStartReading, bookTitl
 
   return (
     <div className={`library-portal-container no-click-paging ${isExiting ? 'is-exiting' : ''} ${isBlurred ? 'is-blurred-for-landing' : ''}`}>
+      {/* Stylish Back Button */}
+      <button className="library-back-btn" onClick={handleBackClick} title={language === 'EN' ? "Back to Selection Portal" : "Vissza a választóoldalra"}>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+
       {/* Dynamic Language Selector Toggle (Symmetric Left positioning) */}
       <div className="library-lang-selector">
         <button 
@@ -135,21 +150,6 @@ export default function LibraryPortal({ onLaunchReader, onStartReading, bookTitl
         </button>
       </div>
 
-      {/* Floating Support Author Button (Ko-fi) */}
-      <a 
-        href="https://ko-fi.com/antonmartin" 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className="library-support-btn" 
-        title={t.supportTitle}
-        aria-label="Support the author on Ko-fi"
-      >
-        <span className="support-btn-text">{t.support}</span>
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-        </svg>
-      </a>
 
       <div className="library-header">
         <h1 className="library-title">{t.library}</h1>

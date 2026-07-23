@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SelectionPortal.css';
 
 const TRANSLATIONS = {
@@ -12,7 +12,9 @@ const TRANSLATIONS = {
     modalTitle: "Hamarosan...",
     modalText: "Ez a szekció jelenleg feltöltés alatt áll.",
     modalClose: "Rendben",
-    contactText: "Kapcsolat:"
+    contactText: "Kapcsolat:",
+    support: "támogatás",
+    supportTitle: "Író támogatása (Ko-fi)"
   },
   EN: {
     title: "Anton Martin",
@@ -24,7 +26,9 @@ const TRANSLATIONS = {
     modalTitle: "Coming soon...",
     modalText: "This section is currently under construction.",
     modalClose: "Got it",
-    contactText: "Contact:"
+    contactText: "Contact:",
+    support: "support",
+    supportTitle: "Support the author (Ko-fi)"
   }
 };
 
@@ -33,6 +37,12 @@ export default function SelectionPortal({ language, onLanguageChange, onSelectNe
   const [isExiting, setIsExiting] = useState(false);
   const t = TRANSLATIONS[language] || TRANSLATIONS.HU;
 
+  useEffect(() => {
+    if (isBlurred) {
+      setIsExiting(false);
+    }
+  }, [isBlurred]);
+
   const handleNeonNightsClick = () => {
     setIsExiting(true);
     setTimeout(() => {
@@ -40,8 +50,23 @@ export default function SelectionPortal({ language, onLanguageChange, onSelectNe
     }, 420);
   };
 
+  const handleBackClick = () => {
+    setIsExiting(true);
+    setTimeout(() => {
+      window.location.hash = '#/';
+    }, 420);
+  };
+
   return (
     <div className={`selection-portal-container ${isExiting ? 'is-exiting' : ''} ${isBlurred ? 'is-blurred-for-landing' : ''}`}>
+      {/* Stylish Back Button */}
+      <button className="selection-back-btn" onClick={handleBackClick} title={language === 'EN' ? "Back to Landing Page" : "Vissza a kezdőlapra"}>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </button>
+
       {/* Dynamic Language Selector Toggle */}
       <div className="selection-lang-selector">
         <button 
@@ -57,6 +82,22 @@ export default function SelectionPortal({ language, onLanguageChange, onSelectNe
           EN
         </button>
       </div>
+
+      {/* Floating Support Author Button (Ko-fi) */}
+      <a 
+        href="https://ko-fi.com/antonmartin" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="selection-support-btn" 
+        title={t.supportTitle}
+        aria-label="Support the author on Ko-fi"
+      >
+        <span className="support-btn-text">{t.support}</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+        </svg>
+      </a>
 
       <div className="selection-portal-content">
         <div className="selection-header">

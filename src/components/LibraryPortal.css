@@ -478,69 +478,7 @@
   }
 }
 
-/* Floating Support Button */
-.library-support-btn {
-  position: absolute;
-  top: 32px;
-  right: 48px;
-  height: 48px;
-  padding: 0 20px;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  color: rgba(255, 255, 255, 0.65);
-  cursor: pointer;
-  z-index: 100;
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.2),
-    0 1px 0 rgba(255, 255, 255, 0.05);
-}
 
-.support-btn-text {
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  transition: color 0.3s ease;
-}
-
-.library-support-btn:hover {
-  background: rgba(123, 237, 159, 0.08);
-  border-color: rgba(123, 237, 159, 0.3);
-  transform: scale(1.05) translateY(-1px);
-  color: #7bed9f; /* Glowing pastel green color */
-  box-shadow: 
-    0 12px 40px rgba(0, 0, 0, 0.35),
-    0 0 15px rgba(123, 237, 159, 0.45);
-}
-
-.library-support-btn:active {
-  transform: scale(1) translateY(0);
-}
-
-@media (max-width: 768px) {
-  .library-support-btn {
-    top: 20px;
-    right: 20px;
-    height: 40px;
-    padding: 0 14px;
-    border-radius: 20px;
-    gap: 8px;
-  }
-
-  .support-btn-text {
-    font-size: 11px;
-    letter-spacing: 1.2px;
-  }
-}
 
 /* E-book downloads section in active card */
 .book-card-downloads {
@@ -630,14 +568,49 @@
   }
 }
 
+/* Back Button Styles */
+.library-back-btn {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  color: rgba(255, 255, 255, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
+
+.library-back-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.05);
+}
+
+.library-back-btn:active {
+  transform: scale(0.95);
+}
+
 /* Language Selector Styles */
 .library-lang-selector {
   position: absolute;
-  top: 32px;
-  left: 48px;
-  height: 48px;
+  top: 25px;
+  left: 82px; /* Shifted to make room for back button */
+  height: 42px;
   padding: 4px;
-  border-radius: 24px;
+  border-radius: 21px;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
@@ -653,9 +626,9 @@
 }
 
 .lang-selector-btn {
-  height: 38px;
-  padding: 0 16px;
-  border-radius: 19px;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 16px;
   border: none;
   background: transparent;
   color: rgba(255, 255, 255, 0.45);
@@ -679,18 +652,25 @@
 }
 
 @media (max-width: 768px) {
-  .library-lang-selector {
+  .library-back-btn {
     top: 20px;
     left: 20px;
-    height: 40px;
+    height: 38px;
+    width: 38px;
+  }
+
+  .library-lang-selector {
+    top: 20px;
+    left: 70px; /* Shifted to make room for back button on mobile */
+    height: 38px;
     padding: 3px;
-    border-radius: 20px;
+    border-radius: 19px;
   }
 
   .lang-selector-btn {
-    height: 32px;
-    padding: 0 12px;
-    border-radius: 16px;
+    height: 30px;
+    padding: 0 10px;
+    border-radius: 15px;
     font-size: 11px;
   }
 }
