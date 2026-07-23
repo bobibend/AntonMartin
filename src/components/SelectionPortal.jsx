@@ -68,7 +68,7 @@ export default function SelectionPortal({ language, onLanguageChange, onSelectNe
           <div className="selection-card neon-nights-card" onClick={handleNeonNightsClick}>
             <div className="selection-card-image-wrapper">
               <img 
-                src="/cover/Neon%20Nights%20ikon.webp" 
+                src="/cover/Neon_Nights_ikon.webp" 
                 alt={t.neonNightsTitle} 
                 className="selection-card-image"
               />
