@@ -7,6 +7,7 @@ import TableOfContents from './components/TableOfContents';
 import LibraryPortal from './components/LibraryPortal';
 import LandingPage from './components/LandingPage';
 import SelectionPortal from './components/SelectionPortal';
+import DownloadPortal from './components/DownloadPortal';
 import { applyChapterTheme } from './utils/themeHelper';
 import { fetchPreviewDocument } from './utils/previewLoader';
 import './index.css';
@@ -18,6 +19,7 @@ function App() {
   const [previewData, setPreviewData] = useState(null);
   const [portalActive, setPortalActive] = useState(false);
   const [isTransitioningToReader, setIsTransitioningToReader] = useState(false);
+  const [downloadActive, setDownloadActive] = useState(false);
 
   // Language management
   const [language, setLanguage] = useState(() => {
@@ -36,6 +38,7 @@ function App() {
       const hash = window.location.hash;
       setIsTransitioningToReader(false);
       if (hash.startsWith('#/preview/')) {
+        setDownloadActive(false);
         const docName = hash.replace('#/preview/', '');
         setLandingActive(false);
         setLandingExiting(false);
@@ -65,25 +68,36 @@ function App() {
           });
         }
       } else if (hash === '#/portal') {
+        setDownloadActive(false);
         setPreviewData(null);
         setLandingActive(false);
         setLandingExiting(false);
         setReaderStarted(false);
         setPortalActive(true);
       } else if (hash === '#/library') {
+        setDownloadActive(false);
         setPreviewData(null);
         setLandingActive(false);
         setLandingExiting(false);
         setReaderStarted(false);
         setPortalActive(false);
       } else if (hash === '#/reader') {
+        setDownloadActive(false);
         setPreviewData(null);
         setLandingActive(false);
         setLandingExiting(false);
         setReaderStarted(true);
         setPortalActive(false);
+      } else if (hash === '#/download-ea9f8c62') {
+        setPreviewData(null);
+        setLandingActive(false);
+        setLandingExiting(false);
+        setReaderStarted(false);
+        setPortalActive(false);
+        setDownloadActive(true);
       } else {
         // Default entry path is landing
+        setDownloadActive(false);
         setPreviewData(null);
         setLandingActive(true);
         setLandingExiting(false);
@@ -305,13 +319,23 @@ function App() {
       )}
 
       {/* Library Portal Page overlaid on top (if not fully started) */}
-      {!readerStarted && !portalActive && !landingActive && (
+      {!readerStarted && !portalActive && !landingActive && !downloadActive && (
         <LibraryPortal 
           onLaunchReader={() => { window.location.hash = '#/reader'; }} 
           onStartReading={() => setIsTransitioningToReader(true)}
           bookTitle={bookData.title}
           author={bookData.author}
           isBlurred={false}
+          language={language}
+          onLanguageChange={setLanguage}
+        />
+      )}
+
+      {/* Secret Download Portal */}
+      {!readerStarted && !portalActive && !landingActive && downloadActive && (
+        <DownloadPortal
+          bookTitle={bookData.title}
+          author={bookData.author}
           language={language}
           onLanguageChange={setLanguage}
         />

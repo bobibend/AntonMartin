@@ -1,0 +1,316 @@
+/* Download Portal Container */
+.download-portal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  height: 100vh;
+  width: 100vw;
+  background-color: #07050a;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(255, 209, 220, 0.08) 0px, transparent 55%),
+    radial-gradient(at 100% 100%, rgba(0, 210, 255, 0.06) 0px, transparent 55%),
+    radial-gradient(at 50% 50%, rgba(13, 10, 20, 1) 0px, #050407 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #ffffff;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  
+  /* Slide down entrance animation */
+  animation: garageDoorClose 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Header Section */
+.download-header {
+  text-align: center;
+  margin-bottom: 5vh;
+  animation: fadeInDown 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.download-portal-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  margin: 0 0 10px 0;
+  background: linear-gradient(135deg, #ffd1dc 10%, #00d2ff 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.download-portal-subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Download Card */
+.download-card {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  max-width: 650px;
+  width: 90%;
+  background: rgba(13, 10, 20, 0.6);
+  border: 1px solid rgba(255, 209, 220, 0.1);
+  border-radius: 20px;
+  padding: 32px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(0, 210, 255, 0.03);
+  animation: modalScaleUp 0.5s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+/* Cover Wrapper */
+.download-cover-wrapper {
+  width: 170px;
+  aspect-ratio: 9 / 16;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  background: #000;
+  flex-shrink: 0;
+}
+
+.download-static-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Info Section */
+.download-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.download-book-title {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #ffffff 30%, rgba(255, 255, 255, 0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.download-book-author {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0 0 28px 0;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.author-label {
+  color: rgba(255, 255, 255, 0.25);
+  font-weight: 400;
+}
+
+/* Links & Buttons */
+.download-links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.download-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.download-action-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.download-action-btn:hover svg {
+  transform: translateY(2px);
+}
+
+.pdf-btn {
+  background: #ff2a85; /* Neon Pink */
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(255, 42, 133, 0.35);
+  border: 1px solid rgba(255, 42, 133, 0.2);
+}
+
+.pdf-btn:hover {
+  background: #ff5ea1;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 42, 133, 0.5);
+}
+
+.epub-btn {
+  background: #00d2ff; /* Neon Cyan */
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.35);
+  border: 1px solid rgba(0, 210, 255, 0.2);
+}
+
+.epub-btn:hover {
+  background: #5ee4ff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 210, 255, 0.5);
+}
+
+.download-action-btn:active {
+  transform: translateY(0);
+}
+
+/* Back Button Styles */
+.download-back-btn {
+  position: absolute;
+  top: 25px;
+  left: 25px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  color: rgba(255, 255, 255, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
+
+.download-back-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.05);
+}
+
+.download-back-btn:active {
+  transform: scale(0.95);
+}
+
+/* Language Selector Styles */
+.download-lang-selector {
+  position: absolute;
+  top: 25px;
+  left: 82px;
+  height: 42px;
+  padding: 4px;
+  border-radius: 21px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  z-index: 100;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 1px 0 rgba(255, 255, 255, 0.05);
+  box-sizing: border-box;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .download-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+    padding: 24px;
+  }
+  
+  .download-cover-wrapper {
+    width: 140px;
+  }
+  
+  .download-info {
+    align-items: center;
+    width: 100%;
+  }
+  
+  .download-book-author {
+    margin-bottom: 20px;
+  }
+  
+  .download-back-btn {
+    top: 20px;
+    left: 20px;
+    height: 38px;
+    width: 38px;
+  }
+
+  .download-lang-selector {
+    top: 20px;
+    left: 70px;
+    height: 38px;
+    padding: 3px;
+    border-radius: 19px;
+  }
+}
+
+/* Reused Animations */
+@keyframes garageDoorClose {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

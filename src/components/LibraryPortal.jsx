@@ -32,8 +32,6 @@ const TRANSLATIONS = {
     crimesSummary: "A Neon Nights - Crimes Amanda és Jessica fiatalkorát mutatja be az intézeti évektől a Neon Nightsban történt eseményekig bezárólag.",
     escapeSummary: "A Neon Nights - Escape Amanda Martinez-klánnál töltött időszakát meséli el, miközben Jessica a Neon Nights megbuktatásán dolgozik.",
     readTitle: "Olvasás megkezdése",
-    downloadPdf: "Letöltés PDF formátumban",
-    downloadEpub: "Letöltés EPUB formátumban",
     ageTitle: "Kizárólag 18 éven felülieknek",
     ageText: "A Neon Nights egy felnőtt tartalmú bűnügyi történet. A folytatáshoz kérjük, erősítsd meg, hogy betöltötted a 18. életévedet.",
     ageConfirm: "Belépek (elmúltam 18)",
@@ -49,8 +47,6 @@ const TRANSLATIONS = {
     crimesSummary: "Neon Nights - Crimes covers the youth of Amanda and Jessica from their institutional years up to the events in Neon Nights.",
     escapeSummary: "Neon Nights - Escape tells the story of Amanda's time with the Martinez clan, while Jessica works on taking down the Neon Nights.",
     readTitle: "Start reading",
-    downloadPdf: "Download in PDF format",
-    downloadEpub: "Download in EPUB format",
     ageTitle: "For Adults Only (18+)",
     ageText: "Neon Nights is a crime story with adult content. To proceed, please confirm that you are at least 18 years of age.",
     ageConfirm: "Enter (I am 18+)",
@@ -212,26 +208,6 @@ export default function LibraryPortal({ onLaunchReader, onStartReading, bookTitl
             <div className="book-card-meta">
               <span className="book-card-author">{author}</span>
               <span className="book-card-badge-18">18+</span>
-            </div>
-            
-            {/* E-book downloads */}
-            <div className="book-card-downloads" onClick={(e) => e.stopPropagation()}>
-              <a 
-                href="/ebook/Neon Nights.pdf" 
-                download="Anton Martin - Neon Nights - Investigation.pdf"
-                className="download-link-btn"
-                title={t.downloadPdf}
-              >
-                <span>PDF</span>
-              </a>
-              <a 
-                href="/ebook/Neon Nights.epub" 
-                download="Anton Martin - Neon Nights - Investigation.epub"
-                className="download-link-btn"
-                title={t.downloadEpub}
-              >
-                <span>EPUB</span>
-              </a>
             </div>
           </div>
         </div>
