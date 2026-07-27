@@ -83,21 +83,68 @@ export default function SelectionPortal({ language, onLanguageChange, onSelectNe
         </button>
       </div>
 
-      {/* Floating Support Author Button (Ko-fi) */}
-      <a 
-        href="https://ko-fi.com/antonmartin" 
-        target="_blank" 
-        rel="noopener noreferrer" 
-        className="selection-support-btn" 
+      {/* Floating Support Author Button (Ko-fi) with Dropdown */}
+      <div 
+        className="selection-support-dropdown" 
         title={t.supportTitle}
-        aria-label="Support the author on Ko-fi"
       >
-        <span className="support-btn-text">{t.support}</span>
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-        </svg>
-      </a>
+        <a 
+          href="https://ko-fi.com/antonmartin" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="support-main-link-wrapper"
+          aria-label="Support the author on Ko-fi"
+        >
+          <div className="support-trigger">
+            <img src="/shop/01_Bronz.webp" alt="Bronz tier" className="support-icon-img" />
+            <span className="support-btn-text">{t.support}</span>
+          </div>
+          
+          {/* Static Bronz badge display under the button */}
+          <div className="support-static-book">
+            <img src="/shop/01_Bronz.webp" alt="Bronz tier" className="support-book-img" />
+          </div>
+        </a>
+
+        <div className="support-dropdown-content">
+          <a 
+            href="https://ko-fi.com/s/920796b062" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="support-dropdown-item"
+          >
+            <img src="/shop/01_Bronz.webp" alt="Bronz tier" className="support-dropdown-img" />
+            <span className="support-dropdown-text">Bronz</span>
+          </a>
+          <a 
+            href="https://ko-fi.com/s/73495bae3f" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="support-dropdown-item"
+          >
+            <img src="/shop/02_Silver.webp" alt="Silver tier" className="support-dropdown-img" />
+            <span className="support-dropdown-text">Silver</span>
+          </a>
+          <a 
+            href="https://ko-fi.com/s/539f9608ee" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="support-dropdown-item"
+          >
+            <img src="/shop/03_Gold.webp" alt="Gold tier" className="support-dropdown-img" />
+            <span className="support-dropdown-text">Gold</span>
+          </a>
+          <a 
+            href="https://ko-fi.com/s/c346435c09" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="support-dropdown-item"
+          >
+            <img src="/shop/04_NeonNights_ebook.webp" alt="E-book tier" className="support-dropdown-img" />
+            <span className="support-dropdown-text">e-book</span>
+          </a>
+        </div>
+      </div>
 
       <div className="selection-portal-content">
         <div className="selection-header">
