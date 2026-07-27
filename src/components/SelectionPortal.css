@@ -694,10 +694,7 @@
   }
 
   .support-static-book {
-    margin-top: 8px;
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
+    display: none;
   }
 }
 
