@@ -74,11 +74,44 @@
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--page-text);
-  opacity: 0.45;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   padding-bottom: 8px;
   margin-bottom: 16px;
   font-weight: 500;
+}
+
+.book-header-title,
+.book-header-chapter-container,
+.book-header-author {
+  opacity: 0.45;
+}
+
+.book-header-right-side {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.book-header-support {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  opacity: 0.85;
+}
+
+.book-header-support img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  border-radius: 50%;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+  transition: transform 0.2s ease;
+}
+
+.book-header-support:hover {
+  transform: scale(1.1);
+  opacity: 1;
 }
 
 .book-header-title {
