@@ -394,19 +394,7 @@ export default function BookPage({
               </svg>
             </button>
           </div>
-          <div className="book-header-right-side">
-            <span className="book-header-author">{author}</span>
-            <a 
-              href="https://ko-fi.com/antonmartin" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="book-header-support"
-              aria-label="Support the author on Ko-fi"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <img src="/shop/01_Bronz.webp" alt="Ko-fi Support" />
-            </a>
-          </div>
+          <span className="book-header-author">{author}</span>
         </header>
 
         {/* Text Area with CSS Columns */}

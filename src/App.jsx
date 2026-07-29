@@ -308,6 +308,20 @@ function App() {
         </button>
       )}
 
+      {/* Floating Support Button (Ko-fi Shop / Bronze) in Viewport Top-Right */}
+      {readerStarted && (
+        <a 
+          href="https://ko-fi.com/antonmartin" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="floating-support-trigger no-click-paging"
+          aria-label="Support the author on Ko-fi"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <img src="/shop/01_Bronz.webp" alt="Ko-fi Support" />
+        </a>
+      )}
+
       {/* Selection Portal Page (shows between Landing and Library) */}
       {!readerStarted && (portalActive || landingActive) && (
         <SelectionPortal
