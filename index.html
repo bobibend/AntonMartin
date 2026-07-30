@@ -1,13 +1,24 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BJJK3PDTLT"></script>
+    <!-- Google tag (gtag.js) & Consent Mode v2 Default -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
+      const savedConsent = localStorage.getItem('cookie-consent');
+      const defaultState = savedConsent === 'granted' ? 'granted' : 'denied';
+
+      gtag('consent', 'default', {
+        'analytics_storage': defaultState,
+        'ad_storage': defaultState,
+        'ad_user_data': defaultState,
+        'ad_personalization': defaultState
+      });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BJJK3PDTLT"></script>
+    <script>
+      gtag('js', new Date());
       gtag('config', 'G-BJJK3PDTLT');
     </script>
     <meta charset="UTF-8" />

@@ -8,6 +8,7 @@ import LibraryPortal from './components/LibraryPortal';
 import LandingPage from './components/LandingPage';
 import SelectionPortal from './components/SelectionPortal';
 import DownloadPortal from './components/DownloadPortal';
+import CookieConsent from './components/CookieConsent';
 import { applyChapterTheme } from './utils/themeHelper';
 import { fetchPreviewDocument } from './utils/previewLoader';
 import './index.css';
@@ -366,6 +367,9 @@ function App() {
           language={language}
         />
       )}
+
+      {/* GDPR Consent Cookie Banner */}
+      <CookieConsent language={language} />
     </>
   );
 }
