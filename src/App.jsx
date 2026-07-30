@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import bookDataHu from '../book_data.json';
 import bookDataEn from '../book_data_en.json';
 import BackgroundLayer from './components/BackgroundLayer';
@@ -162,6 +162,89 @@ function App() {
       applyChapterTheme(currentChapter.colors);
     }
   }, [currentChapter.colors, previewData]);
+
+  // Google Analytics 4 Custom Chapter Tracking & Duration
+  const chapterStartTimeRef = useRef(null);
+  
+  // Refs to avoid stale closures in cleanup/listeners
+  const readerStartedRef = useRef(readerStarted);
+  const chapterIndexRef = useRef(currentChapterIndex);
+  const bookTitleRef = useRef(previewData ? (previewData.subtitle || 'Preview') : bookData.title);
+  const chapterTitleRef = useRef(previewData ? previewData.title : (bookData.chapters[currentChapterIndex]?.title || ''));
+  const languageRef = useRef(language);
+  const isPreviewRef = useRef(!!previewData);
+
+  // Sync refs with state changes
+  useEffect(() => {
+    readerStartedRef.current = readerStarted;
+    chapterIndexRef.current = currentChapterIndex;
+    bookTitleRef.current = previewData ? (previewData.subtitle || 'Preview') : bookData.title;
+    chapterTitleRef.current = previewData ? previewData.title : (bookData.chapters[currentChapterIndex]?.title || '');
+    languageRef.current = language;
+    isPreviewRef.current = !!previewData;
+  }, [readerStarted, currentChapterIndex, previewData, language, bookData]);
+
+  // Helper to send reading duration event
+  const sendChapterReadTime = () => {
+    if (chapterStartTimeRef.current && window.gtag) {
+      const duration = Math.round((Date.now() - chapterStartTimeRef.current) / 1000);
+      // Only record if they spent at least 2 seconds (filters accidental navigations)
+      if (duration >= 2) {
+        window.gtag('event', 'chapter_read_time', {
+          'chapter_index': isPreviewRef.current ? 0 : chapterIndexRef.current,
+          'chapter_title': chapterTitleRef.current,
+          'book_title': bookTitleRef.current,
+          'duration_seconds': duration,
+          'is_preview': isPreviewRef.current,
+          'language': languageRef.current
+        });
+      }
+    }
+    chapterStartTimeRef.current = null;
+  };
+
+  // Helper to start tracking a chapter view
+  const startChapterTracking = () => {
+    chapterStartTimeRef.current = Date.now();
+    if (window.gtag) {
+      window.gtag('event', 'chapter_view', {
+        'chapter_index': isPreviewRef.current ? 0 : chapterIndexRef.current,
+        'chapter_title': chapterTitleRef.current,
+        'book_title': bookTitleRef.current,
+        'is_preview': isPreviewRef.current,
+        'language': languageRef.current
+      });
+    }
+  };
+
+  // Track when chapter/preview opens or switches
+  useEffect(() => {
+    if (readerStarted) {
+      startChapterTracking();
+    } else {
+      sendChapterReadTime();
+    }
+
+    return () => {
+      sendChapterReadTime();
+    };
+  }, [readerStarted, currentChapterIndex, previewData]);
+
+  // Handle visibility changes (switching tabs or minimizing browser)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        sendChapterReadTime();
+      } else if (document.visibilityState === 'visible' && readerStartedRef.current) {
+        chapterStartTimeRef.current = Date.now();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
 
   // Page turns
   const handlePageForward = () => {
