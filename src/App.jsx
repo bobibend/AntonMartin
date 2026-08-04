@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import bookDataHu from '../book_data.json';
 import bookDataEn from '../book_data_en.json';
+import novellakDataHu from '../novellak_data.json';
+import novellakDataEn from '../novellak_data_en.json';
 import BackgroundLayer from './components/BackgroundLayer';
 import BookPage from './components/BookPage';
 import TableOfContents from './components/TableOfContents';
@@ -22,6 +24,11 @@ function App() {
   const [isTransitioningToReader, setIsTransitioningToReader] = useState(false);
   const [downloadActive, setDownloadActive] = useState(false);
 
+  // Book source selector ('novel' or 'novellak')
+  const [bookSource, setBookSource] = useState(() => {
+    return window.location.hash === '#/novellak' ? 'novellak' : 'novel';
+  });
+
   // Language management
   const [language, setLanguage] = useState(() => {
     return localStorage.getItem('nn-language') || 'HU';
@@ -31,7 +38,9 @@ function App() {
     localStorage.setItem('nn-language', language);
   }, [language]);
 
-  const bookData = language === 'EN' ? bookDataEn : bookDataHu;
+  const bookData = bookSource === 'novellak'
+    ? (language === 'EN' ? novellakDataEn : novellakDataHu)
+    : (language === 'EN' ? bookDataEn : bookDataHu);
 
   // Hash-based routing listener
   useEffect(() => {
@@ -76,13 +85,23 @@ function App() {
         setReaderStarted(false);
         setPortalActive(true);
       } else if (hash === '#/library') {
+        setBookSource('novel');
         setDownloadActive(false);
         setPreviewData(null);
         setLandingActive(false);
         setLandingExiting(false);
         setReaderStarted(false);
         setPortalActive(false);
+      } else if (hash === '#/novellak') {
+        setBookSource('novellak');
+        setDownloadActive(false);
+        setPreviewData(null);
+        setLandingActive(false);
+        setLandingExiting(false);
+        setReaderStarted(true);
+        setPortalActive(false);
       } else if (hash === '#/reader') {
+        setBookSource('novel');
         setDownloadActive(false);
         setPreviewData(null);
         setLandingActive(false);
@@ -116,13 +135,8 @@ function App() {
   }, []);
 
   // Persistence for user state
-  const [currentChapterIndex, setCurrentChapterIndex] = useState(() => {
-    return Number(localStorage.getItem('nn-chapter-index')) || 0;
-  });
-  
-  const [currentPageIndex, setCurrentPageIndex] = useState(() => {
-    return Number(localStorage.getItem('nn-page-index')) || 0;
-  });
+  const [currentChapterIndex, setCurrentChapterIndex] = useState(0);
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
   const [fontSize, setFontSize] = useState(() => {
     return Number(localStorage.getItem('nn-font-size')) || 18;
@@ -136,6 +150,19 @@ function App() {
     return saved ? JSON.parse(saved) : {};
   });
 
+  // Sync state when bookSource changes (e.g., loading from localStorage)
+  useEffect(() => {
+    const prefix = bookSource === 'novellak' ? 'nk' : 'nn';
+    const savedChapter = Number(localStorage.getItem(`${prefix}-chapter-index`)) || 0;
+    const savedPage = Number(localStorage.getItem(`${prefix}-page-index`)) || 0;
+    
+    // Bounds check to avoid index out of range crashes
+    const validChapter = savedChapter < bookData.chapters.length ? savedChapter : 0;
+    
+    setCurrentChapterIndex(validChapter);
+    setCurrentPageIndex(savedPage);
+  }, [bookSource, language, bookData]);
+
   // Save bookmarks preference
   useEffect(() => {
     localStorage.setItem('nn-bookmarks', JSON.stringify(bookmarks));
@@ -145,9 +172,12 @@ function App() {
 
   // Save progress changes
   useEffect(() => {
-    localStorage.setItem('nn-chapter-index', currentChapterIndex);
-    localStorage.setItem('nn-page-index', currentPageIndex);
-  }, [currentChapterIndex, currentPageIndex]);
+    if (readerStarted) {
+      const prefix = bookSource === 'novellak' ? 'nk' : 'nn';
+      localStorage.setItem(`${prefix}-chapter-index`, currentChapterIndex);
+      localStorage.setItem(`${prefix}-page-index`, currentPageIndex);
+    }
+  }, [currentChapterIndex, currentPageIndex, bookSource, readerStarted]);
 
   // Save font size preference
   useEffect(() => {
@@ -307,7 +337,7 @@ function App() {
           fontSize={fontSize}
           onFontSizeChange={setFontSize}
           onBackToLibrary={() => {
-            window.location.hash = '#/library';
+            window.location.hash = bookSource === 'novellak' ? '#/portal' : '#/library';
             setTocOpen(false);
           }}
           language={language}

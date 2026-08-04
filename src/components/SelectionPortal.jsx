@@ -6,9 +6,9 @@ const TRANSLATIONS = {
     title: "Anton Martin",
     neonNightsTitle: "Neon Nights",
     neonNightsSummary: "Több évvel ezelőtt a csillogó Love City díszletei között egy sötét szervezet tevékenykedett. Amanda Evans ügyésznő a múlt nyomába ered, hogy saját terepén, a tárgyalóteremben győzze le előző élete démonjait.",
-    otherWritingsTitle: "Egyéb írások",
-    otherWritingsSummary: "Anton Martin egyéb írásai, jelenleg feltöltés alatt.",
-    uploadingStatus: "Feltöltés alatt...",
+    otherWritingsTitle: "Novellák",
+    otherWritingsSummary: "Anton Martin novellagyűjteménye.",
+    uploadingStatus: "Olvasás",
     modalTitle: "Hamarosan...",
     modalText: "Ez a szekció jelenleg feltöltés alatt áll.",
     modalClose: "Rendben",
@@ -20,9 +20,9 @@ const TRANSLATIONS = {
     title: "Anton Martin",
     neonNightsTitle: "Neon Nights",
     neonNightsSummary: "Years ago, behind the glamorous scenes of Love City, a dark organization operated. Prosecutor Amanda Evans follows the trail of the past to defeat the demons of her previous life on her own turf, the courtroom.",
-    otherWritingsTitle: "Other Writings",
-    otherWritingsSummary: "Other writings by Anton Martin, currently uploading.",
-    uploadingStatus: "Upload in progress...",
+    otherWritingsTitle: "Short Stories",
+    otherWritingsSummary: "Short story collection by Anton Martin.",
+    uploadingStatus: "Read",
     modalTitle: "Coming soon...",
     modalText: "This section is currently under construction.",
     modalClose: "Got it",
@@ -47,6 +47,13 @@ export default function SelectionPortal({ language, onLanguageChange, onSelectNe
     setIsExiting(true);
     setTimeout(() => {
       onSelectNeonNights();
+    }, 420);
+  };
+
+  const handleNovellakClick = () => {
+    setIsExiting(true);
+    setTimeout(() => {
+      window.location.hash = '#/novellak';
     }, 420);
   };
 
@@ -167,12 +174,14 @@ export default function SelectionPortal({ language, onLanguageChange, onSelectNe
             </div>
           </div>
 
-          {/* Other Writings Tile (Locked / Feltöltés alatt) */}
-          <div className="selection-card other-writings-card" onClick={() => setShowModal(true)}>
-            <div className="selection-card-image-wrapper placeholder-wrapper">
-              <div className="selection-cover-text">
-                <span className="selection-placeholder-sub">{t.uploadingStatus}</span>
-              </div>
+          {/* Novellák Book Tile */}
+          <div className="selection-card other-writings-card" onClick={handleNovellakClick}>
+            <div className="selection-card-image-wrapper">
+              <img 
+                src="/cover/Novellak_cover.webp" 
+                alt={t.otherWritingsTitle} 
+                className="selection-card-image"
+              />
             </div>
             <div className="selection-card-info">
               <h2 className="selection-card-title">{t.otherWritingsTitle}</h2>
