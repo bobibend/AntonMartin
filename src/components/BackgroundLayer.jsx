@@ -2,7 +2,20 @@ import React, { useMemo } from 'react';
 import { SHAPE_SVGS, mapShapeToSvgKey } from '../constants/shapes';
 import './BackgroundLayer.css';
 
-export default function BackgroundLayer({ shapes, hideTitle }) {
+export default function BackgroundLayer({ shapes, hideTitle, bookSource, language }) {
+  const isNovellak = bookSource === 'novellak';
+  const isEn = language === 'EN';
+
+  // Dynamic segments for Desktop Pop Art Title split
+  const left1 = isNovellak ? (isEn ? 'SH' : 'NO') : 'NE';
+  const left2 = isNovellak ? (isEn ? 'ORT' : 'VEL') : 'NIG';
+  const right1 = isNovellak ? (isEn ? 'STO' : 'LÁ') : 'ON';
+  const right2 = isNovellak ? (isEn ? 'RIES' : 'K') : 'HTS';
+
+  // Dynamic segments for Tablet/Mobile centered title
+  const mob1 = isNovellak ? (isEn ? 'SHORT' : 'NOVEL') : 'NEON';
+  const mob2 = isNovellak ? (isEn ? 'STORIES' : 'LÁK') : 'NIGHTS';
+
   const particles = useMemo(() => {
     if (!shapes || shapes.length === 0) return [];
     
@@ -49,20 +62,20 @@ export default function BackgroundLayer({ shapes, hideTitle }) {
           {/* Desktop version: split to left and right edges */}
           <div className="pop-art-desktop-split">
             <div className="pop-art-side pop-art-left">
-              <span className="title-word neon-word neon-left">NE</span>
-              <span className="title-word nights-word nights-left">NIG</span>
+              <span className="title-word neon-word neon-left">{left1}</span>
+              <span className="title-word nights-word nights-left">{left2}</span>
             </div>
             <div className="pop-art-side pop-art-right">
-              <span className="title-word neon-word neon-right">ON</span>
-              <span className="title-word nights-word nights-right">HTS</span>
+              <span className="title-word neon-word neon-right">{right1}</span>
+              <span className="title-word nights-word nights-right">{right2}</span>
             </div>
           </div>
 
           {/* Tablet/Mobile version: unified, centered, pushed to the top */}
           <div className="pop-art-tablet-mobile">
             <div className="pop-art-centered-title">
-              <span className="title-word neon-word neon-centered">NEON</span>
-              <span className="title-word nights-word nights-centered">NIGHTS</span>
+              <span className="title-word neon-word neon-centered">{mob1}</span>
+              <span className="title-word nights-word nights-centered">{mob2}</span>
             </div>
           </div>
         </div>

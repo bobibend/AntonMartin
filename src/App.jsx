@@ -322,6 +322,8 @@ function App() {
         <BackgroundLayer 
           shapes={previewData ? (previewData.shapes || ['könyv', 'toll']) : currentChapter.shapes}
           hideTitle={landingActive}
+          bookSource={bookSource}
+          language={language}
         />
       )}
 
