@@ -9,8 +9,8 @@ export default function BackgroundLayer({ shapes, hideTitle, bookSource, languag
   // Dynamic segments for Desktop Pop Art Title split
   const left1 = isNovellak ? (isEn ? 'SH' : 'NO') : 'NE';
   const left2 = isNovellak ? (isEn ? 'ORT' : 'VEL') : 'NIG';
-  const right1 = isNovellak ? (isEn ? 'STO' : 'LÁ') : 'ON';
-  const right2 = isNovellak ? (isEn ? 'RIES' : 'K') : 'HTS';
+  const right1 = isNovellak ? (isEn ? 'STORIES' : 'LÁK') : 'ON';
+  const right2 = isNovellak ? '' : 'HTS';
 
   // Dynamic segments for Tablet/Mobile centered title
   const mob1 = isNovellak ? (isEn ? 'SHORT' : 'NOVEL') : 'NEON';
@@ -67,7 +67,7 @@ export default function BackgroundLayer({ shapes, hideTitle, bookSource, languag
             </div>
             <div className="pop-art-side pop-art-right">
               <span className="title-word neon-word neon-right">{right1}</span>
-              <span className="title-word nights-word nights-right">{right2}</span>
+              {right2 && <span className="title-word nights-word nights-right">{right2}</span>}
             </div>
           </div>
 
